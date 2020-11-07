@@ -1,0 +1,6 @@
+context_path: pcc.run.ProjectContext
+project_name: "pcc"
+project_version: "0.16.6"
+package_name: "pcc"
+hooks:
+  - pcc.hooks.project_hooks
