@@ -3,26 +3,35 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
-kkarticle_behavior:
-  type: pandas.JSONDataSet
+kkarticle_interactions:
+  type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kkarticle2020/transaction.json
   layer: raw
 
 
 kkarticle_meta:
-  type: pandas.JSONDataSet
+  type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kkarticle2020/2020-10-27-KKBOX-article-meta.json
   layer: raw
 
+kkarticle_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kkarticle2020/interaction_graph.json
+  layer: intermediate
 
-kktix_behavior:
-  type: pandas.JSONDataSet
+kkarticle_processed_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kkarticle2020/processed_interaction_graph.json
+  layer: intermediate
+
+kktix_interactions:
+  type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/behavior.json
   layer: raw
 
 
 kktix_meta:
-  type: pandas.JSONDataSet
+  type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/kktix_event_20190821.json
   layer: raw
 

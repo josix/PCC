@@ -175,28 +175,14 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (
-        master_doc,
-        "pcc.tex",
-        "pcc Documentation",
-        "QuantumBlack",
-        "manual",
-    )
+    (master_doc, "pcc.tex", "pcc Documentation", "QuantumBlack", "manual",)
 ]
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (
-        master_doc,
-        "pcc",
-        "pcc Documentation",
-        [author],
-        1,
-    )
-]
+man_pages = [(master_doc, "pcc", "pcc Documentation", [author], 1,)]
 
 # -- Options for Texinfo output ----------------------------------------------
 

@@ -21,7 +21,7 @@ chardet==3.0.4            # via binaryornot, requests
 click==7.1.2              # via black, cookiecutter, kedro, pip-tools
 cookiecutter==1.6.0       # via kedro
 coverage==5.3             # via pytest-cov
-decorator==4.4.2          # via ipython
+decorator==4.4.2          # via ipython, networkx
 defusedxml==0.6.0         # via nbconvert
 entrypoints==0.3          # via nbconvert
 flake8==3.8.4             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
@@ -56,6 +56,7 @@ nbconvert==6.0.7          # via jupyter, notebook
 nbformat==5.0.8           # via ipywidgets, nbclient, nbconvert, nbstripout, notebook
 nbstripout==0.3.3         # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 nest-asyncio==1.4.2       # via nbclient
+networkx==2.5             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 notebook==6.1.5           # via jupyter, jupyterlab, jupyterlab-launcher, widgetsnbextension
 packaging==20.4           # via bleach, pytest
 pandocfilters==1.4.3      # via nbconvert
