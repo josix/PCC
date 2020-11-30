@@ -49,10 +49,12 @@ def remove_sparse_nodes(interaction_graph: nx.Graph, degree_limit: int) -> nx.Gr
         Interaction object after removing nodes with sparse degree.
     """
     log = logging.getLogger(__name__)
-    past_nodes = set(interaction_graph.nodes())
-    for node in past_nodes:
-        if node in interaction_graph and interaction_graph.degree[node] < degree_limit:
-            interaction_graph.remove_node(node)
+    unqulified_nodes = [
+        n
+        for n in interaction_graph.nodes()
+        if interaction_graph.degree[n] < degree_limit
+    ]
+    interaction_graph.remove_nodes_from(unqulified_nodes)
     users = [
         n for n, attrs in interaction_graph.nodes(data=True) if attrs["type"] == "U"
     ]
