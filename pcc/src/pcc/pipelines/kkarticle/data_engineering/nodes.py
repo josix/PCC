@@ -6,7 +6,9 @@ import networkx as nx
 
 
 def build_graph(
-    behavior_records: typing.List[typing.Dict[str, typing.Any]]
+    behavior_records: typing.List[
+        typing.Dict[str, typing.Any]
+    ]  # TODO: Use dataclass instead of dict
 ) -> nx.Graph:
     """Preprocess the data for user-item behavior.
 
@@ -41,7 +43,7 @@ def build_graph(
 
 
 def remove_sparse_nodes(interaction_graph: nx.Graph, degree_limit: int) -> nx.Graph:
-    """Preprocess the data for behavior.
+    """Removing nodes that degree lower than given limit
 
     Args:
         interactions: source interaction graph

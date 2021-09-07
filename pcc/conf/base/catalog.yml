@@ -24,6 +24,21 @@ kkarticle_processed_interaction_graph:
   filepath: data/02_intermediate/kkarticle2020/processed_interaction_graph.json
   layer: intermediate
 
+kkarticle_training_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kkarticle2020/training_graph.json
+  layer: intermediate
+
+kkarticle_testing_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kkarticle2020/testing_graph.json
+  layer: intermediate
+
+kkarticle_training_graph_smore:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/03_primary/kkarticle2020/training_graph.tsv
+  layer: primary
+
 kktix_interactions:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/behavior.json

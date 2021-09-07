@@ -8,6 +8,7 @@ anyconfig==0.9.11         # via kedro
 appdirs==1.4.4            # via black
 argon2-cffi==20.1.0       # via notebook
 arrow==0.17.0             # via jinja2-time
+astroid==2.6.6            # via pylint
 async-generator==1.10     # via nbclient
 attrs==20.3.0             # via black, jsonschema, pytest
 backcall==0.2.0           # via ipython
@@ -33,7 +34,7 @@ ipykernel==5.3.4          # via ipywidgets, jupyter, jupyter-console, notebook, 
 ipython-genutils==0.2.0   # via jupyterlab, nbformat, notebook, qtconsole, traitlets
 ipython==7.19.0           # via -r /tmp2/wswang/pcc/pcc/src/requirements.in, ipykernel, ipywidgets, jupyter-console
 ipywidgets==7.5.1         # via jupyter
-isort==4.3.21             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
+isort==4.3.21             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in, pylint
 jedi==0.17.2              # via ipython
 jinja2-time==0.2.0        # via cookiecutter
 jinja2==2.11.2            # via cookiecutter, jinja2-time, nbconvert, notebook
@@ -47,10 +48,13 @@ jupyterlab-launcher==0.10.5  # via jupyterlab
 jupyterlab-pygments==0.1.2  # via nbconvert
 jupyterlab==0.31.1        # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 kedro==0.16.6             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
+lazy-object-proxy==1.6.0  # via astroid
 markupsafe==1.1.1         # via jinja2
-mccabe==0.6.1             # via flake8
+mccabe==0.6.1             # via flake8, pylint
 mistune==0.8.4            # via nbconvert
 more-itertools==8.6.0     # via pytest
+mypy-extensions==0.4.3    # via mypy
+mypy==0.910               # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 nbclient==0.5.1           # via nbconvert
 nbconvert==6.0.7          # via jupyter, notebook
 nbformat==5.0.8           # via ipywidgets, nbclient, nbconvert, nbstripout, notebook
@@ -75,6 +79,7 @@ pycodestyle==2.6.0        # via flake8
 pycparser==2.20           # via cffi
 pyflakes==2.2.0           # via flake8
 pygments==2.7.2           # via ipython, jupyter-console, jupyterlab-pygments, nbconvert, qtconsole
+pylint==2.9.6             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 pyparsing==2.4.7          # via packaging
 pyrsistent==0.17.3        # via jsonschema
 pytest-cov==2.10.1        # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
@@ -92,17 +97,19 @@ send2trash==1.5.0         # via notebook
 six==1.15.0               # via argon2-cffi, bleach, jsonschema, packaging, pip-tools, python-dateutil
 terminado==0.9.1          # via notebook
 testpath==0.4.4           # via nbconvert
-toml==0.10.2              # via black
+toml==0.10.2              # via black, mypy, pylint
 toposort==1.5             # via kedro
 tornado==6.1              # via ipykernel, jupyter-client, notebook, terminado
 traitlets==5.0.5          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbclient, nbconvert, nbformat, notebook, qtconsole
-typed-ast==1.4.1          # via black
+typed-ast==1.4.1          # via astroid, black, mypy
+typing-extensions==3.10.0.2  # via astroid, mypy
 urllib3==1.25.11          # via requests
 wcwidth==0.2.5            # via prompt-toolkit, pytest
 webencodings==0.5.1       # via bleach
 wheel==0.32.2             # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 whichcraft==0.6.1         # via cookiecutter
 widgetsnbextension==3.5.1  # via ipywidgets
+wrapt==1.12.1             # via astroid
 zipp==3.4.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

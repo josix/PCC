@@ -36,6 +36,7 @@ from kedro.pipeline import Pipeline
 from kedro.versioning import Journal
 
 from pcc.pipelines.kkarticle.data_engineering import pipeline as kkarticle_de
+from pcc.pipelines.kkarticle.smore import pipeline as kkarticle_smore_pipeline
 
 
 class ProjectHooks:
@@ -48,7 +49,10 @@ class ProjectHooks:
 
         """
         kkarticle_de_pipeline = kkarticle_de.create_pipeline()
-        return {"kkarticle_de": kkarticle_de_pipeline, "__default__": Pipeline([])}
+        return {
+            "kkarticle_de": kkarticle_de_pipeline,
+            "kkarticle_hpe": kkarticle_smore_pipeline.create_pipeline("hpe"),
+        }
 
     @hook_impl
     def register_config_loader(self, conf_paths: Iterable[str]) -> ConfigLoader:

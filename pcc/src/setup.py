@@ -28,9 +28,7 @@
 
 from setuptools import find_packages, setup
 
-entry_point = (
-    "pcc = pcc.run:run_package"
-)
+entry_point = "pcc = pcc.run:run_package"
 
 
 # get the dependencies and installs

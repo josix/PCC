@@ -12,3 +12,5 @@ pytest-mock>=1.7.1, <2.0
 pytest~=5.0
 wheel==0.32.2
 networkx==2.5
+mypy==0.910
+pylint==2.9.6
