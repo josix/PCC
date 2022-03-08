@@ -2,11 +2,14 @@
 This is a boilerplate pipeline 'model'
 generated using Kedro 0.17.7
 """
+import logging
 from typing import Dict, List
 
 import networkx as nx
 
 from pcc.schemas.goodreads import ItemSeenStatus
+
+log = logging.getLogger(__name__)
 
 
 def remove_unseen_items_from_interaction_graph(
@@ -21,6 +24,19 @@ def remove_unseen_items_from_interaction_graph(
         seen_items=item_seen_status["seen_items"],
     ).unseen_items
     interaction_graph.remove_nodes_from(unseen_items)
+    users = [
+        n for n, attrs in interaction_graph.nodes(data=True) if attrs["type"] == "U"
+    ]
+    items = [
+        n for n, attrs in interaction_graph.nodes(data=True) if attrs["type"] == "I"
+    ]
+    words = [
+        n for n, attrs in interaction_graph.nodes(data=True) if attrs["type"] == "W"
+    ]
+    edges = interaction_graph.edges()
+    log.info(
+        f"After Removing Unseen items Nodes: #edges: {len(edges)} #users: {len(users)} #items:{len(items)} #words:{len(words)}"
+    )
     return interaction_graph
 
 
@@ -31,4 +47,35 @@ def build_semantic_content_graph(
     """
     Take item node as joint, connect each user and the words of items and build out a U-W graph.
     """
-    pass
+    semantic_content_graph = nx.Graph()
+    for node, attrs in interaction_graph.nodes(data=True):
+        if attrs["type"] != "U":
+            continue
+        user = node
+        semantic_content_graph.add_node(user, **attrs)
+        user_history = {item for item in interaction_graph[user]}
+        for item in user_history:
+            for word in content_graph[item]:
+                if word not in semantic_content_graph:
+                    semantic_content_graph.add_node(word, **content_graph.nodes[word])
+                semantic_content_graph.add_edge(user, word)
+    users = [
+        n
+        for n, attrs in semantic_content_graph.nodes(data=True)
+        if attrs["type"] == "U"
+    ]
+    items = [
+        n
+        for n, attrs in semantic_content_graph.nodes(data=True)
+        if attrs["type"] == "I"
+    ]
+    words = [
+        n
+        for n, attrs in semantic_content_graph.nodes(data=True)
+        if attrs["type"] == "W"
+    ]
+    edges = semantic_content_graph.edges()
+    log.info(
+        f"Build Semantic Content Graph: #edges: {len(edges)} #users: {len(users)} #items:{len(items)} #words:{len(words)}"
+    )
+    return semantic_content_graph

@@ -99,3 +99,8 @@ trainging_interaction_graph:
   type: kedro.extras.datasets.networkx.NetworkXDataSet
   filepath: data/03_primary/goodreads_comics_graphic/trainging_interaction_graph.json
   layer: primary
+
+training_semantic_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/training_semantic_content_graph.json
+  layer: primary

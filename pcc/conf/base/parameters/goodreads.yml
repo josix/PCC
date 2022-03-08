@@ -23,3 +23,7 @@ top_k_keywords: 10
 unseen_items_ratio: 0.3
 
 user_query_num: 3
+
+goodreads_sparse_degee_threshold:
+  interaction_graph: 3
+  content_graph: 0

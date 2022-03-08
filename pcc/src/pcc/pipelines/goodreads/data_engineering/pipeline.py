@@ -50,7 +50,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs=[
                     "goodreads_comics_graphic_raw_interaction_graph",
                     "goodreads_comics_graphic_raw_content_graph",
-                    "params:sparse_degee_threshold",
+                    "params:goodreads_sparse_degee_threshold",
                 ],
                 outputs=[
                     "processed_goodreads_interaction_graph",

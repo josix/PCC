@@ -29,7 +29,7 @@ def select_unseen_items(interaction_graph: nx.Graph, ratio: float) -> Dict[str, 
         f"Took {len(unseen_items)} items as unseen items from total {len(items)} books"
     )
     seen_items = list(set(items) - set(unseen_items))
-    log.info(f"#Seen items {len(seen_items)}")
+    log.info(f"#Seen items {len(seen_items)}, #Unseen items: {len(unseen_items)}")
     return {"unseen_items": unseen_items, "seen_items": seen_items}
 
 
@@ -69,4 +69,5 @@ def generate_user_profile(
                 "queries": queries,
             }
         )
+    log.info(f"#Experiment User (with {user_query_num} queries): {len(user_profile)}")
     return user_profile

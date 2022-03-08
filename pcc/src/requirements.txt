@@ -208,6 +208,8 @@ nest-asyncio==1.5.4
     #   ipykernel
     #   nbclient
     #   notebook
+networkx==2.7.1
+    # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 notebook==6.4.8
     # via
     #   jupyter

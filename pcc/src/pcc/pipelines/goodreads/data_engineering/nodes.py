@@ -110,7 +110,7 @@ def process_book_metadata(
         )
         book.description_keywords = str(
             keywords(remove_stopwords(book.description))
-        ).split("\n")
+        ).split("\n")[:top_k_keywords]
         processed_books.append(book.__dict__)
     return processed_books
 
@@ -143,8 +143,8 @@ def build_raw_content_graph(
                 content_graph.add_node(
                     item, index=string_to_index_store[item], type="I"
                 )
-        if book.title_keywords:
-            words = book.title_keywords
+        if book.title_keywords and book.description_keywords:
+            words = book.title_keywords + book.description_keywords
             for word in words:
                 word = f"w-{word}"
                 if word not in content_graph:
@@ -171,7 +171,7 @@ def build_raw_content_graph(
 def remove_sparse_nodes(
     interaction_graph: nx.Graph,
     content_graph: nx.Graph,
-    degree_limit: int,
+    degree_limit_config: Dict[str, int],
 ) -> Tuple[nx.Graph, nx.Graph]:
     """Removing nodes that degree lower than given limit
 
@@ -181,6 +181,10 @@ def remove_sparse_nodes(
         Interaction object after removing nodes with sparse degree.
     """
     for graph in (interaction_graph, content_graph):
+        if graph is interaction_graph:
+            degree_limit = degree_limit_config["interaction_graph"]
+        else:
+            degree_limit = degree_limit_config["content_graph"]
         unqulified_nodes = [n for n in graph.nodes() if graph.degree[n] < degree_limit]
         graph.remove_nodes_from(unqulified_nodes)
         users = [n for n, attrs in graph.nodes(data=True) if attrs["type"] == "U"]
