@@ -6,9 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-kedro-viz = "*"
-kedro = "==0.16.6"
-
+kedro = "==0.17.7"
+kedro-viz = "==4.3.1"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"

@@ -1,0 +1,25 @@
+# This is a boilerplate parameters config generated for pipeline 'goodreads'
+# using Kedro 0.17.7.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
+
+interaction_use_fields:
+  - user_id
+  - book_id
+  - rating
+  - review_text
+  - date_updated 
+
+content_use_fields:
+  - title
+  - title_without_series
+  - book_id
+  - description
+  - similar_books
+
+top_k_keywords: 10
+
+unseen_items_ratio: 0.3
+
+user_query_num: 3

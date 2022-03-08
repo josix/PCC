@@ -3,50 +3,99 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
-kkarticle_interactions:
-  type: kedro.extras.datasets.json.JSONDataSet
-  filepath: data/01_raw/kkarticle2020/transaction.json
-  layer: raw
+# kkarticle_interactions:
+#   type: kedro.extras.datasets.json.JSONDataSet
+#   filepath: data/01_raw/kkarticle2020/transaction.json
+#   layer: raw
 
 
-kkarticle_meta:
-  type: kedro.extras.datasets.json.JSONDataSet
-  filepath: data/01_raw/kkarticle2020/2020-10-27-KKBOX-article-meta.json
-  layer: raw
+# kkarticle_meta:
+#   type: kedro.extras.datasets.json.JSONDataSet
+#   filepath: data/01_raw/kkarticle2020/2020-10-27-KKBOX-article-meta.json
+#   layer: raw
 
-kkarticle_interaction_graph:
-  type: kedro.extras.datasets.networkx.NetworkXDataSet
-  filepath: data/02_intermediate/kkarticle2020/interaction_graph.json
-  layer: intermediate
+# kkarticle_interaction_graph:
+#   type: kedro.extras.datasets.networkx.NetworkXDataSet
+#   filepath: data/02_intermediate/kkarticle2020/interaction_graph.json
+#   layer: intermediate
 
-kkarticle_processed_interaction_graph:
-  type: kedro.extras.datasets.networkx.NetworkXDataSet
-  filepath: data/02_intermediate/kkarticle2020/processed_interaction_graph.json
-  layer: intermediate
+# kkarticle_processed_interaction_graph:
+#   type: kedro.extras.datasets.networkx.NetworkXDataSet
+#   filepath: data/02_intermediate/kkarticle2020/processed_interaction_graph.json
+#   layer: intermediate
 
-kkarticle_training_graph:
-  type: kedro.extras.datasets.networkx.NetworkXDataSet
-  filepath: data/02_intermediate/kkarticle2020/training_graph.json
-  layer: intermediate
+# kkarticle_training_graph:
+#   type: kedro.extras.datasets.networkx.NetworkXDataSet
+#   filepath: data/02_intermediate/kkarticle2020/training_graph.json
+#   layer: intermediate
 
-kkarticle_testing_graph:
-  type: kedro.extras.datasets.networkx.NetworkXDataSet
-  filepath: data/02_intermediate/kkarticle2020/testing_graph.json
-  layer: intermediate
+# kkarticle_testing_graph:
+#   type: kedro.extras.datasets.networkx.NetworkXDataSet
+#   filepath: data/02_intermediate/kkarticle2020/testing_graph.json
+#   layer: intermediate
 
-kkarticle_training_graph_smore:
-  type: kedro.extras.datasets.text.TextDataSet
-  filepath: data/03_primary/kkarticle2020/training_graph.tsv
-  layer: primary
+# kkarticle_training_graph_smore:
+#   type: kedro.extras.datasets.text.TextDataSet
+#   filepath: data/03_primary/kkarticle2020/training_graph.tsv
+#   layer: primary
 
 kktix_interactions:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/behavior.json
   layer: raw
 
-
 kktix_meta:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/kktix_event_20190821.json
   layer: raw
 
+goodreads_comics_graphic_reviews:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/01_raw/goodreads_comics_graphic/goodreads_reviews_comics_graphic.json
+  layer: raw
+
+goodreads_comics_graphic_books:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/01_raw/goodreads_comics_graphic/goodreads_books_comics_graphic.json
+  layer: raw
+
+goodreads_comics_graphic_raw_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/goodreads_comics_graphic/raw_interaction_graph.json
+  layer: intermediate
+  # versioned: True
+
+goodreads_comics_graphic_raw_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/goodreads_comics_graphic/raw_content_graph.json
+  layer: intermediate
+
+processed_goodreads_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/processed_goodreads_content_graph.json
+  layer: primary
+
+processed_goodreads_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/processed_goodreads_interaction_graph.json
+  layer: primary
+
+processed_goodreads_comics_graphic_books:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/processed_goodreads_comics_graphic_books.json
+  layer: primary
+
+experiment_unseen_goodreads_comics_graphic_books:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/experiment_unseen_goodreads_comics_graphic_books.json
+  layer: primary
+
+experiment_user_profile:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/experiment_user_profile.json
+  layer: primary
+
+trainging_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/goodreads_comics_graphic/trainging_interaction_graph.json
+  layer: primary
