@@ -3,11 +3,15 @@ This is a boilerplate pipeline 'model'
 generated using Kedro 0.17.7
 """
 import logging
-from typing import Dict, List
+from dataclasses import asdict
+from typing import Dict, List, Any
+from pathlib import Path
 
 import networkx as nx
 
 from pcc.schemas.goodreads import ItemSeenStatus
+from pcc.schemas.common import OutputModels, SmoreTrainResult
+from pcc.utils.smore_helper import run_smore_command
 
 log = logging.getLogger(__name__)
 
@@ -100,3 +104,31 @@ def export_smore_format(
         converted_line.append("")
         output.append("\n".join(converted_line))
     return output
+
+
+def smore_train(
+    interaction_graph,
+    content_graph,
+    semantic_content_graph,
+    training_graph_configs,
+) -> List[Dict[str, Any]]:
+    """
+    Training on interaction graph, content graph, semantic_content_graph
+    according to training configurations saperately.
+    """
+    graph_type_to_model_result: Dict[str, OutputModels] = {
+        graph_type: OutputModels(outputs=[])
+        for graph_type in training_graph_configs.keys()
+    }
+    for graph_type, graph_configuration in training_graph_configs.items():
+        file_path = Path(graph_configuration["path"])
+        for model, parameters in graph_configuration["models"].items():
+            model_output: SmoreTrainResult = run_smore_command(
+                model_name=model, parameters=parameters, file_path=file_path
+            )
+            graph_type_to_model_result[graph_type].outputs.append(model_output)
+    return [
+        asdict(graph_type_to_model_result["interaction"]),
+        asdict(graph_type_to_model_result["content"]),
+        asdict(graph_type_to_model_result["semantic_content"]),
+    ]

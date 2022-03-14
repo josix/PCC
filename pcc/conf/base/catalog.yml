@@ -119,3 +119,18 @@ goodreads_smore_semantic_content_training_graph:
   type: kedro.extras.datasets.text.TextDataSet
   filepath: data/05_model_input/goodreads_comics_graphic/semantic_content_graph.tsv
   layer: model_input
+
+goodreads_smore_interaction_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/interaction_rep.json
+  layer: model_output
+
+goodreads_smore_content_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/content_rep.json
+  layer: model_output
+
+goodreads_smore_semantic_content_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/semantic_content_rep.json
+  layer: model_output

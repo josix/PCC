@@ -10,6 +10,7 @@ from .nodes import (
     remove_unseen_items_from_interaction_graph,
     build_semantic_content_graph,
     export_smore_format,
+    smore_train,
 )
 
 
@@ -47,6 +48,21 @@ def create_pipeline(**kwargs) -> Pipeline:
                     "goodreads_smore_semantic_content_training_graph",
                 ],
                 name="export_smore_format",
+            ),
+            node(
+                func=smore_train,
+                inputs=[
+                    "goodreads_smore_interaction_training_graph",
+                    "goodreads_smore_content_training_graph",
+                    "goodreads_smore_semantic_content_training_graph",
+                    "params:training_graph_configs",
+                ],
+                outputs=[
+                    "goodreads_smore_interaction_training_embedding",
+                    "goodreads_smore_content_training_embedding",
+                    "goodreads_smore_semantic_content_training_embedding",
+                ],
+                name="smore_train",
             ),
         ]
     )
