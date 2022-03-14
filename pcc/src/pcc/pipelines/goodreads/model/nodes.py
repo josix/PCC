@@ -79,3 +79,24 @@ def build_semantic_content_graph(
         f"Build Semantic Content Graph: #edges: {len(edges)} #users: {len(users)} #items:{len(items)} #words:{len(words)}"
     )
     return semantic_content_graph
+
+
+def export_smore_format(
+    interaction_graph: nx.Graph,
+    content_graph: nx.Graph,
+    semantic_content_graph: nx.Graph,
+) -> List[str]:
+    """
+    Export graph in smore format
+    """
+    output: List[str] = []
+    for graph in (interaction_graph, content_graph, semantic_content_graph):
+        converted_line = []
+        for source, target, attrs in graph.edges(data=True):
+            weight = 1 if "weight" not in attrs else attrs["weight"]
+            source_node_idx = graph.nodes[source]["index"]
+            target_node_idx = graph.nodes[target]["index"]
+            converted_line.append(f"{source_node_idx}\t{target_node_idx}\t{weight}")
+        converted_line.append("")
+        output.append("\n".join(converted_line))
+    return output

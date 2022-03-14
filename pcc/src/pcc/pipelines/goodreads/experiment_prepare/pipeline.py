@@ -28,7 +28,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                     "experiment_unseen_goodreads_comics_graphic_books",
                     "params:user_query_num",
                 ],
-                outputs="experiment_user_profile",
+                outputs="goodreads_experiment_user_profile",
                 name="generate_user_profile",
             ),
         ],

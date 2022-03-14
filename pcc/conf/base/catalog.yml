@@ -90,17 +90,32 @@ experiment_unseen_goodreads_comics_graphic_books:
   filepath: data/03_primary/goodreads_comics_graphic/experiment_unseen_goodreads_comics_graphic_books.json
   layer: primary
 
-experiment_user_profile:
+goodreads_experiment_user_profile:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/03_primary/goodreads_comics_graphic/experiment_user_profile.json
   layer: primary
 
-trainging_interaction_graph:
+goodreads_trainging_interaction_graph:
   type: kedro.extras.datasets.networkx.NetworkXDataSet
   filepath: data/03_primary/goodreads_comics_graphic/trainging_interaction_graph.json
   layer: primary
 
-training_semantic_content_graph:
+goodreads_training_semantic_content_graph:
   type: kedro.extras.datasets.networkx.NetworkXDataSet
   filepath: data/03_primary/goodreads_comics_graphic/training_semantic_content_graph.json
   layer: primary
+
+goodreads_smore_interaction_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/goodreads_comics_graphic/interaction_graph.tsv
+  layer: model_input
+
+goodreads_smore_content_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/goodreads_comics_graphic/content_graph.tsv
+  layer: model_input
+
+goodreads_smore_semantic_content_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/goodreads_comics_graphic/semantic_content_graph.tsv
+  layer: model_input
