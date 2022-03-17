@@ -44,7 +44,7 @@ training_graph_configs:
       mf:
         dimensions: 128
         sample_times: 5
-        negative_samples: 5
+        negative_samples: 10
         alpha: 0.025
         reg: 0.01
         threads: 10
@@ -55,7 +55,7 @@ training_graph_configs:
         dimensions: 128
         undirected: 1
         order: 2
-        sample_times: 5
+        sample_times: 10
         negative_samples: 5
         alpha: 0.025
         threads: 10
@@ -66,7 +66,15 @@ training_graph_configs:
         dimensions: 128
         undirected: 1
         order: 2
-        sample_times: 
+        sample_times: 10
         negative_samples: 5
         alpha: 0.025
         threads: 10
+
+aggregate_item_configs:
+  n_words: 5
+  content_graph_model: line
+  semantic_content_graph_model: line
+  include_content_W: False
+  include_content_I: False
+  stradegy: concat # mean, concat, distance_weighted_average

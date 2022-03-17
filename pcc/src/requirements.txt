@@ -217,8 +217,9 @@ notebook==6.4.8
     #   widgetsnbextension
 notebook-shim==0.1.0
     # via nbclassic
-numpy==1.22.2
+numpy==1.22.0
     # via
+    #   -r /tmp2/wswang/pcc/pcc/src/requirements.in
     #   gensim
     #   scipy
 packaging==21.3

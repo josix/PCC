@@ -11,6 +11,7 @@ from .nodes import (
     build_semantic_content_graph,
     export_smore_format,
     smore_train,
+    aggregate_item_emb,
 )
 
 
@@ -63,6 +64,17 @@ def create_pipeline(**kwargs) -> Pipeline:
                     "goodreads_smore_semantic_content_training_embedding",
                 ],
                 name="smore_train",
+            ),
+            node(
+                func=aggregate_item_emb,
+                inputs=[
+                    "goodreads_smore_content_training_embedding",
+                    "goodreads_smore_semantic_content_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:aggregate_item_configs",
+                ],
+                outputs="goodreads_pcc_item_embedding",
+                name="aggregate_item_emb",
             ),
         ]
     )

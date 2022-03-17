@@ -43,12 +43,12 @@ def run_smore_command(
         result = run(command)
         if result.return_code != 0:
             raise RuntimeError(str(result.stderr))
-        index_to_embedding: Dict[int, List[float]] = {}
+        index_to_embedding: Dict[str, List[float]] = {}
         with open(output_file, "rt") as fin:
             fin.readline()
             for line in fin:
                 idx, *emb = line.strip().split()
-                index_to_embedding[int(idx)] = [float(val) for val in emb]
+                index_to_embedding[idx] = [float(val) for val in emb]
 
     return SmoreTrainResult(
         index_to_embedding=index_to_embedding,

@@ -134,3 +134,8 @@ goodreads_smore_semantic_content_training_embedding:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/07_model_output/goodreads_comics_graphic/semantic_content_rep.json
   layer: model_output
+
+goodreads_pcc_item_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/pcc_item_embedding.json
+  layer: model_output

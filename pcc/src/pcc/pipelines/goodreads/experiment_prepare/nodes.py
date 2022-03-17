@@ -9,7 +9,7 @@ from typing import Dict, List, Any
 
 import networkx as nx
 
-from pcc.schemas.goodreads import ItemSeenStatus
+from pcc.schemas.common import ItemSeenStatus
 
 log = logging.getLogger(__name__)
 random.seed(2022)

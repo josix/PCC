@@ -2,16 +2,18 @@
 This is a boilerplate pipeline 'model'
 generated using Kedro 0.17.7
 """
+import random
 import logging
 from dataclasses import asdict
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from pathlib import Path
 
 import networkx as nx
+import numpy as np
 
-from pcc.schemas.goodreads import ItemSeenStatus
-from pcc.schemas.common import OutputModels, SmoreTrainResult
+from pcc.schemas.common import OutputModels, SmoreTrainResult, ItemSeenStatus
 from pcc.utils.smore_helper import run_smore_command
+from pcc.utils.aggregator import aggregate
 
 log = logging.getLogger(__name__)
 
@@ -107,10 +109,10 @@ def export_smore_format(
 
 
 def smore_train(
-    interaction_graph,
+    interaction_graph,  # no used since it will trained by external smore process
     content_graph,
     semantic_content_graph,
-    training_graph_configs,
+    training_graph_configs: Dict[str, Any],
 ) -> List[Dict[str, Any]]:
     """
     Training on interaction graph, content graph, semantic_content_graph
@@ -132,3 +134,114 @@ def smore_train(
         asdict(graph_type_to_model_result["content"]),
         asdict(graph_type_to_model_result["semantic_content"]),
     ]
+
+
+def aggregate_item_emb(
+    content_embedding: Dict[str, Any],
+    semantic_content_embedding: Dict[str, Any],
+    content_graph: nx.Graph,
+    aggregate_configuration,
+) -> Dict[str, Any]:
+    """Aggregate embeeding for old and new item by aggreate
+    the content embedding and semantic_content_embedding"""
+    index_to_embedding: Dict[str, List[float]] = {}
+    content_model = SmoreTrainResult(
+        **[
+            model
+            for model in content_embedding["outputs"]
+            if model["model_name"] == aggregate_configuration["content_graph_model"]
+        ][0]
+    )
+    semantic_content_model = SmoreTrainResult(
+        **[
+            model
+            for model in semantic_content_embedding["outputs"]
+            if model["model_name"]
+            == aggregate_configuration["semantic_content_graph_model"]
+        ][0]
+    )
+    items = [n for n, attrs in content_graph.nodes(data=True) if attrs["type"] == "I"]
+
+    for item in items:
+        item_idx = str(content_graph.nodes[item]["index"])
+        neighbor_words = list(content_graph.neighbors(item))
+        random.shuffle(neighbor_words)
+        neighbor_words_semantic_content_embeddings: List[List[float]] = []
+        neighbor_words_content_embeddings: List[List[float]] = []
+        n_words = min(aggregate_configuration["n_words"], len(neighbor_words))
+        # collect n_words of word embeddings of one given item
+        for i, word in enumerate(neighbor_words):
+            if i + 1 == n_words:
+                break
+            idx = str(content_graph.nodes[word]["index"])
+            if idx in semantic_content_model.index_to_embedding:
+                neighbor_words_semantic_content_embeddings.append(
+                    semantic_content_model.index_to_embedding[idx]
+                )
+            if idx in content_model.index_to_embedding:
+                neighbor_words_content_embeddings.append(
+                    content_model.index_to_embedding[idx]
+                )
+        # take mean average of word embeddings to build item embedding
+        agg_semantic_item_emb: np.ndarray
+        agg_content_item_emb: Optional[np.ndarray] = None
+        content_item_emb: Optional[np.ndarray] = None
+        if not neighbor_words_semantic_content_embeddings:
+            agg_semantic_item_emb = np.zeros((1, semantic_content_model.embedding_size))
+        else:
+            agg_semantic_item_emb = np.mean(
+                np.array(neighbor_words_semantic_content_embeddings), axis=0
+            )
+        if aggregate_configuration["include_content_W"]:
+            if not neighbor_words_content_embeddings:
+                agg_content_item_emb = np.zeros(
+                    (1, semantic_content_model.embedding_size)
+                )
+            else:
+                agg_content_item_emb = np.mean(
+                    np.array(neighbor_words_content_embeddings), axis=0
+                )
+        if aggregate_configuration["include_content_I"]:
+            content_item_emb = np.array(content_model.index_to_embedding[item_idx])
+        # aggregate different type item embedding to represent one item
+        if agg_content_item_emb is not None and content_item_emb is not None:
+            index_to_embedding[item_idx] = aggregate(
+                [content_item_emb, agg_content_item_emb, agg_semantic_item_emb],
+                stradegy=aggregate_configuration["stradegy"],
+            ).tolist()
+        elif agg_content_item_emb is not None and content_item_emb is None:
+            index_to_embedding[item_idx] = aggregate(
+                [agg_content_item_emb, agg_semantic_item_emb],
+                stradegy=aggregate_configuration["stradegy"],
+            ).tolist()
+        elif content_item_emb is not None and agg_content_item_emb is None:
+            index_to_embedding[item_idx] = aggregate(
+                [content_item_emb, agg_semantic_item_emb],
+                stradegy=aggregate_configuration["stradegy"],
+            ).tolist()
+        else:
+            index_to_embedding[item_idx] = agg_semantic_item_emb.tolist()
+    if (
+        aggregate_configuration["include_content_I"]
+        and aggregate_configuration["include_content_W"]
+    ):
+        embedding_size = (
+            semantic_content_model.embedding_size + content_model.embedding_size * 2
+        )
+    elif (
+        aggregate_configuration["include_content_I"]
+        or aggregate_configuration["include_content_W"]
+    ):
+        embedding_size = (
+            semantic_content_model.embedding_size + content_model.embedding_size
+        )
+    else:
+        embedding_size = semantic_content_model.embedding_size
+
+    model_output = SmoreTrainResult(
+        model_name="pcc",
+        embedding_size=embedding_size,
+        index_to_embedding=index_to_embedding,
+    )
+    log.info(f"Training {len(index_to_embedding)} items' pcc embedding is completed")
+    return asdict(model_output)
