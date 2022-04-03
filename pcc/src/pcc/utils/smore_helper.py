@@ -7,7 +7,7 @@ import logging
 from typing import Dict, List, Union
 from pathlib import Path
 
-from pcc.schemas.common import SmoreTrainResult, Command
+from pcc.schemas.common import Model, Command
 
 log = logging.getLogger(__name__)
 SMORE_CMD_DIR = Path(__file__).parent.parent.parent.parent.parent / "smore/cli"
@@ -28,7 +28,7 @@ def run(cmd: str) -> Command:
 
 def run_smore_command(
     model_name: str, parameters: Dict[str, str], file_path: Union[str, Path]
-) -> SmoreTrainResult:
+) -> Model:
     """
     Run smore internal model according to the given model_name and the parameters
     """
@@ -50,7 +50,7 @@ def run_smore_command(
                 idx, *emb = line.strip().split()
                 index_to_embedding[idx] = [float(val) for val in emb]
 
-    return SmoreTrainResult(
+    return Model(
         index_to_embedding=index_to_embedding,
         model_name=model_name,
         embedding_size=int(parameters["dimensions"]),

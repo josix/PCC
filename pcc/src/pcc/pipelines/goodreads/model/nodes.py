@@ -11,7 +11,7 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 
-from pcc.schemas.common import OutputModels, SmoreTrainResult, ItemSeenStatus
+from pcc.schemas.common import OutputModels, Model, ItemSeenStatus
 from pcc.utils.smore_helper import run_smore_command
 from pcc.utils.aggregator import aggregate
 
@@ -125,7 +125,7 @@ def smore_train(
     for graph_type, graph_configuration in training_graph_configs.items():
         file_path = Path(graph_configuration["path"])
         for model, parameters in graph_configuration["models"].items():
-            model_output: SmoreTrainResult = run_smore_command(
+            model_output: Model = run_smore_command(
                 model_name=model, parameters=parameters, file_path=file_path
             )
             graph_type_to_model_result[graph_type].outputs.append(model_output)
@@ -141,18 +141,20 @@ def aggregate_item_emb(
     semantic_content_embedding: Dict[str, Any],
     content_graph: nx.Graph,
     aggregate_configuration,
+    include_content_i: bool,
+    include_content_w: bool,
 ) -> Dict[str, Any]:
     """Aggregate embeeding for old and new item by aggreate
     the content embedding and semantic_content_embedding"""
     index_to_embedding: Dict[str, List[float]] = {}
-    content_model = SmoreTrainResult(
+    content_model = Model(
         **[
             model
             for model in content_embedding["outputs"]
             if model["model_name"] == aggregate_configuration["content_graph_model"]
         ][0]
     )
-    semantic_content_model = SmoreTrainResult(
+    semantic_content_model = Model(
         **[
             model
             for model in semantic_content_embedding["outputs"]
@@ -187,12 +189,14 @@ def aggregate_item_emb(
         agg_content_item_emb: Optional[np.ndarray] = None
         content_item_emb: Optional[np.ndarray] = None
         if not neighbor_words_semantic_content_embeddings:
-            agg_semantic_item_emb = np.zeros((1, semantic_content_model.embedding_size))
+            agg_semantic_item_emb = np.zeros(
+                (1, semantic_content_model.embedding_size)
+            )[0]
         else:
             agg_semantic_item_emb = np.mean(
                 np.array(neighbor_words_semantic_content_embeddings), axis=0
             )
-        if aggregate_configuration["include_content_W"]:
+        if include_content_w:
             if not neighbor_words_content_embeddings:
                 agg_content_item_emb = np.zeros(
                     (1, semantic_content_model.embedding_size)
@@ -201,7 +205,7 @@ def aggregate_item_emb(
                 agg_content_item_emb = np.mean(
                     np.array(neighbor_words_content_embeddings), axis=0
                 )
-        if aggregate_configuration["include_content_I"]:
+        if include_content_i:
             content_item_emb = np.array(content_model.index_to_embedding[item_idx])
         # aggregate different type item embedding to represent one item
         if agg_content_item_emb is not None and content_item_emb is not None:
@@ -214,31 +218,25 @@ def aggregate_item_emb(
                 [agg_content_item_emb, agg_semantic_item_emb],
                 stradegy=aggregate_configuration["stradegy"],
             ).tolist()
-        elif content_item_emb is not None and agg_content_item_emb is None:
+        elif agg_content_item_emb is None and content_item_emb is not None:
             index_to_embedding[item_idx] = aggregate(
                 [content_item_emb, agg_semantic_item_emb],
                 stradegy=aggregate_configuration["stradegy"],
             ).tolist()
         else:
             index_to_embedding[item_idx] = agg_semantic_item_emb.tolist()
-    if (
-        aggregate_configuration["include_content_I"]
-        and aggregate_configuration["include_content_W"]
-    ):
+    if include_content_i and include_content_w:
         embedding_size = (
             semantic_content_model.embedding_size + content_model.embedding_size * 2
         )
-    elif (
-        aggregate_configuration["include_content_I"]
-        or aggregate_configuration["include_content_W"]
-    ):
+    elif include_content_i or include_content_w:
         embedding_size = (
             semantic_content_model.embedding_size + content_model.embedding_size
         )
     else:
         embedding_size = semantic_content_model.embedding_size
 
-    model_output = SmoreTrainResult(
+    model_output = Model(
         model_name="pcc",
         embedding_size=embedding_size,
         index_to_embedding=index_to_embedding,

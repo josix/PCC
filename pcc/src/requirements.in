@@ -17,3 +17,5 @@ wheel>=0.35, <0.37
 networkx==2.7.1
 gensim==3.6.0
 numpy==1.22.0
+annoy==1.17.0
+scikit-learn==1.0.2

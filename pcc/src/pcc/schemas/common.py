@@ -6,7 +6,7 @@ from typing import Dict, List
 
 
 @dataclass
-class SmoreTrainResult:
+class Model:
     """
     Smore training result schema
     """
@@ -20,7 +20,7 @@ class SmoreTrainResult:
 class OutputModels:
     """Schema of multiple model outputs of one training graph"""
 
-    outputs: List[SmoreTrainResult]
+    outputs: List[Model]
 
 
 @dataclass

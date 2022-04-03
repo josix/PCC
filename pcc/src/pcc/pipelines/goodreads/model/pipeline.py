@@ -15,6 +15,20 @@ from .nodes import (
 )
 
 
+def pcc_model_wrapper(
+    func, include_content_w: bool = False, include_content_i: bool = False
+):
+    def wrapper(*args, **kwargs):
+        return func(
+            *args,
+            **kwargs,
+            include_content_i=include_content_i,
+            include_content_w=include_content_w
+        )
+
+    return wrapper
+
+
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline(
         [
@@ -66,7 +80,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="smore_train",
             ),
             node(
-                func=aggregate_item_emb,
+                func=pcc_model_wrapper(aggregate_item_emb),
                 inputs=[
                     "goodreads_smore_content_training_embedding",
                     "goodreads_smore_semantic_content_training_embedding",
