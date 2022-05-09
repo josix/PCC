@@ -198,15 +198,16 @@ def aggregate_item_emb(
             )
         if include_content_w:
             if not neighbor_words_content_embeddings:
-                agg_content_item_emb = np.zeros(
-                    (1, semantic_content_model.embedding_size)
-                )
+                agg_content_item_emb = np.zeros((1, content_model.embedding_size))[0]
             else:
                 agg_content_item_emb = np.mean(
                     np.array(neighbor_words_content_embeddings), axis=0
                 )
         if include_content_i:
-            content_item_emb = np.array(content_model.index_to_embedding[item_idx])
+            if item_idx in content_model.index_to_embedding:
+                content_item_emb = np.array(content_model.index_to_embedding[item_idx])
+            else:
+                content_item_emb = np.zeros((1, content_model.embedding_size))[0]
         # aggregate different type item embedding to represent one item
         if agg_content_item_emb is not None and content_item_emb is not None:
             index_to_embedding[item_idx] = aggregate(

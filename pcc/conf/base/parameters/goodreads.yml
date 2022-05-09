@@ -20,12 +20,12 @@ content_use_fields:
 
 top_k_keywords: 10
 
-unseen_items_ratio: 0.3
+unseen_items_ratio: 0.05
 
 user_query_num: 3
-
+   
 goodreads_sparse_degee_threshold:
-  interaction_graph: 3
+  interaction_graph: 0
   content_graph: 0
 
 training_graph_configs:
@@ -59,6 +59,13 @@ training_graph_configs:
         negative_samples: 5
         alpha: 0.025
         threads: 10
+      mf:
+        dimensions: 128
+        sample_times: 100
+        negative_samples: 10
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
   semantic_content:
     path: /tmp2/wswang/pcc/pcc/data/05_model_input/goodreads_comics_graphic/semantic_content_graph.tsv
     models:
@@ -75,8 +82,6 @@ aggregate_item_configs:
   n_words: 10
   content_graph_model: line
   semantic_content_graph_model: line
-  include_content_W: False
-  include_content_I: False
   stradegy: concat # mean, concat, distance_weighted_average
 
 rec_num: 10

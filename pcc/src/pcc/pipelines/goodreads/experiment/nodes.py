@@ -24,7 +24,7 @@ def random_recommend(
     user_num: int,
 ) -> Dict[str, float]:
     """Recommend items based on random selection"""
-    unseen_items: List[str] = items["unseen_items"]
+    candidates: List[str] = items["unseen_items"] + items["seen_items"]
     average_precision: List[float] = []
     recommended_items: Set[str] = set()
     recall: List[float] = []
@@ -34,8 +34,8 @@ def random_recommend(
             actual_history=user["actual_history"],
             queries=user["queries"],
         )
-        random.shuffle(unseen_items)
-        rec_items = unseen_items[:rec_num]
+        random.shuffle(candidates)
+        rec_items = candidates[:rec_num]
         recommended_items = recommended_items | set(rec_items)
         match_num = len(set(rec_items) & set(profile.actual_history))
         average_precision.append(match_num / rec_num)
@@ -61,14 +61,14 @@ def pcc_recommend(
         embedding_size=pcc_model["embedding_size"],
         index_to_embedding=pcc_model["index_to_embedding"],
     )
-    unseen_items: List[str] = items["unseen_items"]
+    candidates = items["unseen_items"] + items["seen_items"]
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
         if str(attrs["index"]) in model.index_to_embedding.keys()
     }
     trained_nodeid_to_idx = {value: key for key, value in trained_idx_to_nodeid.items()}
-    candidates = set(trained_nodeid_to_idx.keys()) & set(unseen_items)
+    candidates = set(trained_nodeid_to_idx.keys()) & set(candidates)
     annoy_index = AnnoyIndex(model.embedding_size, metric="angular")
     for candidate_id in candidates:
         annoy_index.add_item(
@@ -131,14 +131,14 @@ def smore_content_model_recommend(
         embedding_size=model[0]["embedding_size"],
         index_to_embedding=model[0]["index_to_embedding"],
     )
-    unseen_items: List[str] = items["unseen_items"]
+    candidates = items["unseen_items"] + items["seen_items"]
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
         if str(attrs["index"]) in model.index_to_embedding.keys()
     }
     trained_nodeid_to_idx = {value: key for key, value in trained_idx_to_nodeid.items()}
-    candidates = set(trained_nodeid_to_idx.keys()) & set(unseen_items)
+    candidates = set(trained_nodeid_to_idx.keys()) & set(candidates)
     annoy_index = AnnoyIndex(model.embedding_size, metric="angular")
     for candidate_id in candidates:
         annoy_index.add_item(
@@ -205,11 +205,11 @@ def tfidf_recommend(
         corpus.append(f"{book.title_without_series} {book.description}")
         idx_to_bookid[idx] = f"i-{book.book_id}"
         bookid_to_idx[f"i-{book.book_id}"] = idx
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(max_features=1024)
     document_term_matrix = vectorizer.fit_transform(corpus)
     dim = document_term_matrix.shape[1]
-    unseen_items: List[str] = items["unseen_items"]
-    candidates = set(bookid_to_idx.keys()) & set(unseen_items)
+    candidates = items["unseen_items"] + items["seen_items"]
+    candidates = set(bookid_to_idx.keys()) & set(candidates)
     annoy_index = AnnoyIndex(dim, metric="angular")
     for candidate_id in candidates:
         annoy_index.add_item(

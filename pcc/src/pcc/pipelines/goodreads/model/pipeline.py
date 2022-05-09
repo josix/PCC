@@ -90,5 +90,40 @@ def create_pipeline(**kwargs) -> Pipeline:
                 outputs="goodreads_pcc_item_embedding",
                 name="aggregate_item_emb",
             ),
+            node(
+                func=pcc_model_wrapper(aggregate_item_emb, include_content_i=True),
+                inputs=[
+                    "goodreads_smore_content_training_embedding",
+                    "goodreads_smore_semantic_content_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:aggregate_item_configs",
+                ],
+                outputs="goodreads_pcc_item_embedding_I",
+                name="aggregate_item_emb_I",
+            ),
+            node(
+                func=pcc_model_wrapper(aggregate_item_emb, include_content_w=True),
+                inputs=[
+                    "goodreads_smore_content_training_embedding",
+                    "goodreads_smore_semantic_content_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:aggregate_item_configs",
+                ],
+                outputs="goodreads_pcc_item_embedding_W",
+                name="aggregate_item_emb_W",
+            ),
+            node(
+                func=pcc_model_wrapper(
+                    aggregate_item_emb, include_content_w=True, include_content_i=True
+                ),
+                inputs=[
+                    "goodreads_smore_content_training_embedding",
+                    "goodreads_smore_semantic_content_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:aggregate_item_configs",
+                ],
+                outputs="goodreads_pcc_item_embedding_IW",
+                name="aggregate_item_emb_IW",
+            ),
         ]
     )

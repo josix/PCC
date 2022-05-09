@@ -140,6 +140,21 @@ goodreads_pcc_item_embedding:
   filepath: data/07_model_output/goodreads_comics_graphic/pcc_item_embedding.json
   layer: model_output
 
+goodreads_pcc_item_embedding_I:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_pcc_item_embedding_I.json
+  layer: model_output
+
+goodreads_pcc_item_embedding_W:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_pcc_item_embedding_W.json
+  layer: model_output
+
+goodreads_pcc_item_embedding_IW:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_pcc_item_embedding_IW.json
+  layer: model_output
+
 goodreads_exp_random_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_random_recommend_result.json
@@ -152,6 +167,26 @@ goodreads_exp_pcc_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_pcc_recommend_result.json
 
-goodreads_smore_content_model_recommend_result:
+goodreads_exp_pcc_I_recommend_result:
   type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_smore_content_model_recommend_result.json
+  filepath: data/09_tracking/goodreads_exp_pcc_I_recommend_result.json
+
+goodreads_exp_pcc_W_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_pcc_W_recommend_result.json
+
+goodreads_exp_pcc_IW_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_pcc_IW_recommend_result.json
+
+goodreads_smore_content_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_content_model_line_recommend_result.json
+
+goodreads_smore_content_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_content_model_mf_recommend_result.json
+
+goodreads_smore_interactoin_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_interactoin_model_mf_recommend_result.json
