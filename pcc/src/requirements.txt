@@ -176,6 +176,8 @@ kedro==0.17.7
     #   kedro-telemetry
 kedro-telemetry==0.1.3
     # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
+lightfm==1.16
+    # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 markupsafe==2.1.0
     # via jinja2
 matplotlib-inline==0.1.3
@@ -225,6 +227,7 @@ numpy==1.22.0
     # via
     #   -r /tmp2/wswang/pcc/pcc/src/requirements.in
     #   gensim
+    #   lightfm
     #   scikit-learn
     #   scipy
 packaging==21.3
@@ -326,13 +329,17 @@ requests==2.25.1
     #   cookiecutter
     #   jupyterlab-server
     #   kedro-telemetry
+    #   lightfm
 rope==0.21.1
     # via kedro
 scikit-learn==1.0.2
-    # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
+    # via
+    #   -r /tmp2/wswang/pcc/pcc/src/requirements.in
+    #   lightfm
 scipy==1.8.0
     # via
     #   gensim
+    #   lightfm
     #   scikit-learn
 send2trash==1.8.0
     # via

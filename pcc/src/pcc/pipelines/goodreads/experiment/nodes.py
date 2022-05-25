@@ -3,6 +3,7 @@ This is a boilerplate pipeline 'experiment'
 generated using Kedro 0.17.7
 """
 import random
+import logging
 from collections import defaultdict
 from typing import Dict, Any, List, Set
 
@@ -15,6 +16,7 @@ from pcc.schemas.goodreads import Book
 
 
 ANNOY_TREE_NUM = 10
+log = logging.getLogger(__name__)
 
 
 def random_recommend(
@@ -24,7 +26,9 @@ def random_recommend(
     user_num: int,
 ) -> Dict[str, float]:
     """Recommend items based on random selection"""
-    candidates: List[str] = items["unseen_items"] + items["seen_items"]
+    candidates: List[str] = (
+        items["unseen_items"] + items["seen_items"]
+    )  # TODO: decouple from experiment of recomending unseen items
     average_precision: List[float] = []
     recommended_items: Set[str] = set()
     recall: List[float] = []
@@ -61,7 +65,9 @@ def pcc_recommend(
         embedding_size=pcc_model["embedding_size"],
         index_to_embedding=pcc_model["index_to_embedding"],
     )
-    candidates = items["unseen_items"] + items["seen_items"]
+    candidates = (
+        items["unseen_items"] + items["seen_items"]
+    )  # TODO: decouple from experiment of recomending unseen items
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
@@ -131,7 +137,9 @@ def smore_content_model_recommend(
         embedding_size=model[0]["embedding_size"],
         index_to_embedding=model[0]["index_to_embedding"],
     )
-    candidates = items["unseen_items"] + items["seen_items"]
+    candidates = (
+        items["unseen_items"] + items["seen_items"]
+    )  # TODO: decouple from experiment of recomending unseen items
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
@@ -208,7 +216,9 @@ def tfidf_recommend(
     vectorizer = TfidfVectorizer(max_features=1024)
     document_term_matrix = vectorizer.fit_transform(corpus)
     dim = document_term_matrix.shape[1]
-    candidates = items["unseen_items"] + items["seen_items"]
+    candidates = (
+        items["unseen_items"] + items["seen_items"]
+    )  # TODO: decouple from experiment of recomending unseen items
     candidates = set(bookid_to_idx.keys()) & set(candidates)
     annoy_index = AnnoyIndex(dim, metric="angular")
     for candidate_id in candidates:

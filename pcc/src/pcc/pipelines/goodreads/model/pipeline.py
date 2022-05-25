@@ -12,6 +12,7 @@ from .nodes import (
     export_smore_format,
     smore_train,
     aggregate_item_emb,
+    lightfm_pcc_smore,
 )
 
 
@@ -23,7 +24,18 @@ def pcc_model_wrapper(
             *args,
             **kwargs,
             include_content_i=include_content_i,
-            include_content_w=include_content_w
+            include_content_w=include_content_w,
+        )
+
+    return wrapper
+
+
+def lightfm_pcc_smore_wrapper(func, smore_model_name: str = "mf"):
+    def wrapper(*args, **kwargs):
+        return func(
+            *args,
+            **kwargs,
+            smore_model_name=smore_model_name,
         )
 
     return wrapper
@@ -124,6 +136,58 @@ def create_pipeline(**kwargs) -> Pipeline:
                 ],
                 outputs="goodreads_pcc_item_embedding_IW",
                 name="aggregate_item_emb_IW",
+            ),
+            node(
+                func=lightfm_pcc_smore_wrapper(
+                    lightfm_pcc_smore, smore_model_name="mf"
+                ),
+                inputs=[
+                    "goodreads_pcc_item_embedding",
+                    "goodreads_smore_interaction_training_embedding",
+                    "processed_goodreads_interaction_graph",
+                    "params:lightfm_configs",
+                ],
+                outputs="goodreads_lightfm_pcc_smore_mf_training_embedding",
+                name="lightfm_pcc_smore_mf",
+            ),
+            node(
+                func=lightfm_pcc_smore_wrapper(
+                    lightfm_pcc_smore, smore_model_name="mf"
+                ),
+                inputs=[
+                    "goodreads_pcc_item_embedding_I",
+                    "goodreads_smore_interaction_training_embedding",
+                    "processed_goodreads_interaction_graph",
+                    "params:lightfm_configs",
+                ],
+                outputs="goodreads_lightfm_pcc_I_smore_mf_training_embedding",
+                name="lightfm_pcc_I_smore_mf",
+            ),
+            node(
+                func=lightfm_pcc_smore_wrapper(
+                    lightfm_pcc_smore, smore_model_name="mf"
+                ),
+                inputs=[
+                    "goodreads_pcc_item_embedding_W",
+                    "goodreads_smore_interaction_training_embedding",
+                    "processed_goodreads_interaction_graph",
+                    "params:lightfm_configs",
+                ],
+                outputs="goodreads_lightfm_pcc_W_smore_mf_training_embedding",
+                name="lightfm_pcc_W_smore_mf",
+            ),
+            node(
+                func=lightfm_pcc_smore_wrapper(
+                    lightfm_pcc_smore, smore_model_name="mf"
+                ),
+                inputs=[
+                    "goodreads_pcc_item_embedding_IW",
+                    "goodreads_smore_interaction_training_embedding",
+                    "processed_goodreads_interaction_graph",
+                    "params:lightfm_configs",
+                ],
+                outputs="goodreads_lightfm_pcc_IW_smore_mf_training_embedding",
+                name="lightfm_pcc_IW_smore_mf",
             ),
         ]
     )

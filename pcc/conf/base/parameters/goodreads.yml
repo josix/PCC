@@ -86,3 +86,9 @@ aggregate_item_configs:
 
 rec_num: 10
 exp_user_num: 3000
+
+lightfm_configs:
+  emb_size: 128
+  epoch: 100
+  lr: 0.05
+  loss: bpr
