@@ -15,6 +15,7 @@ from lightfm import LightFM
 
 from pcc.schemas.common import OutputModels, Model, ItemSeenStatus
 from pcc.utils.smore_helper import run_smore_command
+from pcc.utils.lightfm_helper import LightFMInteraction, get_lightfm_input
 
 log = logging.getLogger(__name__)
 
@@ -209,42 +210,10 @@ def lightfm_pcc_smore(
     interaction_graph: nx.Graph,
     lightfm_configs: Dict[str, Any],
     smore_model_name: str,
+    use_user_feature: bool = False,
 ):
     """Concatenate trained content-based item embedding and interaction-based smore embedding"""
-    users = [
-        (n, attrs)
-        for n, attrs in interaction_graph.nodes(data=True)
-        if attrs["type"] == "U"
-    ]
-    user_graph_idx_to_model_user_idx: Dict[int, int] = {
-        attrs["index"]: user_idx for user_idx, (n, attrs) in enumerate(users)
-    }
-    items = [
-        (n, attrs)
-        for n, attrs in interaction_graph.nodes(data=True)
-        if attrs["type"] == "I"
-    ]
-    item_graph_idx_to_model_item_idx: Dict[int, int] = {
-        attrs["index"]: item_idx for item_idx, (n, attrs) in enumerate(items)
-    }
-    model_item_idx_to_item_graph_idx: Dict[int, int] = {
-        item_idx: attrs["index"] for item_idx, (n, attrs) in enumerate(items)
-    }
-    item_id_to_model_idx: Dict[str, int] = {
-        item[0]: idx for idx, item in enumerate(items)
-    }
-    row = []
-    col = []
-    for user_idx, (user, _) in enumerate(users):
-        for item in interaction_graph[user]:
-            row.append(user_idx)
-            col.append(item_id_to_model_idx[item])
-    data = [1] * len(row)
-    interaction_matrix = csr_array((data, (row, col)), shape=(len(users), len(items)))
-    train_interaction = interaction_matrix
-    log.info(
-        f"Shape of training interaction {train_interaction.shape}",
-    )
+    lightfm_input: LightFMInteraction = get_lightfm_input(interaction_graph)
 
     pcc_model = Model(
         model_name=aggregated_item_embedding["model_name"],
@@ -271,17 +240,35 @@ def lightfm_pcc_smore(
                 + [0.0] * smore_model.embedding_size
             )
         item_idx = int(item_idx)
-        if item_idx not in item_graph_idx_to_model_item_idx:
+        if item_idx not in lightfm_input.item_graph_idx_to_model_idx:
             continue
         item_model_idx_to_emb[
-            item_graph_idx_to_model_item_idx[item_idx]
+            lightfm_input.item_graph_idx_to_model_idx[item_idx]
         ] = output_embedding
 
     item_features = []
-    for idx in range(len(item_model_idx_to_emb)):
+    for idx in range(lightfm_input.interaction_matrix.shape[1]):
         item_features.append(item_model_idx_to_emb[idx])
     log.info(f"shape of item_features {np.array(item_features).shape}")
     item_features = sparse.csr_matrix(np.array(item_features))
+
+    user_features = None
+    if use_user_feature:
+        user_model_idx_to_emb: Dict[int, List[float]] = {}
+        for graph_idx in smore_model.index_to_embedding:
+            if int(graph_idx) in lightfm_input.user_graph_idx_to_model_idx:
+                user_model_idx_to_emb[
+                    lightfm_input.user_graph_idx_to_model_idx[int(graph_idx)]
+                ] = smore_model.index_to_embedding[graph_idx]
+
+        user_features = []
+        for idx in range(lightfm_input.interaction_matrix.shape[0]):
+            if idx not in user_model_idx_to_emb:
+                user_features.append([0.0] * smore_model.embedding_size)
+            else:
+                user_features.append(user_model_idx_to_emb[idx])
+        log.info(f"shape of user_features {np.array(user_features).shape}")
+        user_features = sparse.csr_matrix(np.array(user_features))
 
     model = LightFM(
         learning_rate=lightfm_configs["lr"],
@@ -289,17 +276,21 @@ def lightfm_pcc_smore(
         no_components=lightfm_configs["emb_size"],
     )
     model.fit(
-        train_interaction,
+        lightfm_input.interaction_matrix,
         epochs=lightfm_configs["epoch"],
         num_threads=20,
         verbose=True,
         item_features=item_features,
+        user_features=user_features,
     )
 
     item_bias, item_embeddings = model.get_item_representations(features=item_features)
     index_to_embedding: Dict[str, List[float]] = {}
+    assert not item_embeddings is None
     for idx, emb in enumerate(item_embeddings):
-        index_to_embedding[str(model_item_idx_to_item_graph_idx[idx])] = emb.tolist()
+        index_to_embedding[
+            str(lightfm_input.item_model_idx_to_graph_idx[idx])
+        ] = emb.tolist()
 
     log.info(
         f"Concatenating {len(index_to_embedding)} items' pcc and smore embeddings is completed"
