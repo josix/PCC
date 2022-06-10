@@ -2,10 +2,9 @@
 This is a boilerplate pipeline 'model'
 generated using Kedro 0.17.7
 """
-import random
 import logging
 from dataclasses import asdict
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from pathlib import Path
 
 import networkx as nx
@@ -16,7 +15,6 @@ from lightfm import LightFM
 
 from pcc.schemas.common import OutputModels, Model, ItemSeenStatus
 from pcc.utils.smore_helper import run_smore_command
-from pcc.utils.aggregator import aggregate
 
 log = logging.getLogger(__name__)
 
@@ -144,8 +142,6 @@ def aggregate_item_emb(
     semantic_content_embedding: Dict[str, Any],
     content_graph: nx.Graph,
     aggregate_configuration,
-    include_content_i: bool,
-    include_content_w: bool,
 ) -> Dict[str, Any]:
     """Aggregate embeeding for old and new item by aggreate
     the content embedding and semantic_content_embedding"""
@@ -169,80 +165,38 @@ def aggregate_item_emb(
 
     for item in items:
         item_idx = str(content_graph.nodes[item]["index"])
-        neighbor_words = list(content_graph.neighbors(item))
-        random.shuffle(neighbor_words)
-        neighbor_words_semantic_content_embeddings: List[List[float]] = []
-        neighbor_words_content_embeddings: List[List[float]] = []
+        neighbor_words = [
+            node[0]
+            for node in sorted(
+                content_graph.degree(content_graph.neighbors(item)),
+                key=lambda x: x[1],
+                reverse=True,
+            )
+        ][:]
         n_words = min(aggregate_configuration["n_words"], len(neighbor_words))
+        neighbor_words = neighbor_words[:n_words]
+        neighbor_words_semantic_content_embeddings: List[List[float]] = []
         # collect n_words of word embeddings of one given item
-        for i, word in enumerate(neighbor_words):
-            if i + 1 == n_words:
-                break
+        for word in neighbor_words:
             idx = str(content_graph.nodes[word]["index"])
             if idx in semantic_content_model.index_to_embedding:
                 neighbor_words_semantic_content_embeddings.append(
                     semantic_content_model.index_to_embedding[idx]
                 )
-            if idx in content_model.index_to_embedding:
-                neighbor_words_content_embeddings.append(
-                    content_model.index_to_embedding[idx]
-                )
-        # take mean average of word embeddings to build item embedding
         agg_semantic_item_emb: np.ndarray
-        agg_content_item_emb: Optional[np.ndarray] = None
-        content_item_emb: Optional[np.ndarray] = None
         if not neighbor_words_semantic_content_embeddings:
             agg_semantic_item_emb = np.zeros(
                 (1, semantic_content_model.embedding_size)
             )[0]
         else:
-            agg_semantic_item_emb = np.mean(
+            agg_semantic_item_emb = np.sum(
                 np.array(neighbor_words_semantic_content_embeddings), axis=0
             )
-        if include_content_w:
-            if not neighbor_words_content_embeddings:
-                agg_content_item_emb = np.zeros((1, content_model.embedding_size))[0]
-            else:
-                agg_content_item_emb = np.mean(
-                    np.array(neighbor_words_content_embeddings), axis=0
-                )
-        if include_content_i:
-            if item_idx in content_model.index_to_embedding:
-                content_item_emb = np.array(content_model.index_to_embedding[item_idx])
-            else:
-                content_item_emb = np.zeros((1, content_model.embedding_size))[0]
-        # aggregate different type item embedding to represent one item
-        if agg_content_item_emb is not None and content_item_emb is not None:
-            index_to_embedding[item_idx] = aggregate(
-                [content_item_emb, agg_content_item_emb, agg_semantic_item_emb],
-                stradegy=aggregate_configuration["stradegy"],
-            ).tolist()
-        elif agg_content_item_emb is not None and content_item_emb is None:
-            index_to_embedding[item_idx] = aggregate(
-                [agg_content_item_emb, agg_semantic_item_emb],
-                stradegy=aggregate_configuration["stradegy"],
-            ).tolist()
-        elif agg_content_item_emb is None and content_item_emb is not None:
-            index_to_embedding[item_idx] = aggregate(
-                [content_item_emb, agg_semantic_item_emb],
-                stradegy=aggregate_configuration["stradegy"],
-            ).tolist()
-        else:
-            index_to_embedding[item_idx] = agg_semantic_item_emb.tolist()
-    if include_content_i and include_content_w:
-        embedding_size = (
-            semantic_content_model.embedding_size + content_model.embedding_size * 2
-        )
-    elif include_content_i or include_content_w:
-        embedding_size = (
-            semantic_content_model.embedding_size + content_model.embedding_size
-        )
-    else:
-        embedding_size = semantic_content_model.embedding_size
+        index_to_embedding[item_idx] = agg_semantic_item_emb.tolist()
 
     model_output = Model(
         model_name="pcc",
-        embedding_size=embedding_size,
+        embedding_size=semantic_content_model.embedding_size,
         index_to_embedding=index_to_embedding,
     )
     log.info(f"Training {len(index_to_embedding)} items' pcc embedding is completed")

@@ -187,18 +187,6 @@ goodreads_exp_pcc_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_pcc_recommend_result.json
 
-goodreads_exp_pcc_I_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_pcc_I_recommend_result.json
-
-goodreads_exp_pcc_W_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_pcc_W_recommend_result.json
-
-goodreads_exp_pcc_IW_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_pcc_IW_recommend_result.json
-
 goodreads_smore_content_model_line_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_content_model_line_recommend_result.json
@@ -214,15 +202,3 @@ goodreads_smore_interactoin_model_mf_recommend_result:
 goodreads_exp_lightfm_pcc_smore_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_lightfm_pcc_smore_mf_recommend_result.json
-
-goodreads_exp_lightfm_pcc_I_smore_mf_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_I_smore_mf_recommend_result.json
-
-goodreads_exp_lightfm_pcc_W_smore_mf_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_W_smore_mf_recommend_result.json
-
-goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result:
-  type: tracking.MetricsDataSet
-  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result.json
