@@ -10,7 +10,6 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 from scipy import sparse
-from scipy.sparse import csr_array
 from lightfm import LightFM
 
 from pcc.schemas.common import OutputModels, Model, ItemSeenStatus
@@ -142,10 +141,14 @@ def aggregate_item_emb(
     content_embedding: Dict[str, Any],
     semantic_content_embedding: Dict[str, Any],
     content_graph: nx.Graph,
+    interaction_graph: nx.Graph,
     aggregate_configuration,
+    use_content_item_emb: bool = False,
 ) -> Dict[str, Any]:
     """Aggregate embeeding for old and new item by aggreate
     the content embedding and semantic_content_embedding"""
+    lightfm_input: LightFMInteraction = get_lightfm_input(interaction_graph)
+
     index_to_embedding: Dict[str, List[float]] = {}
     content_model = Model(
         **[
@@ -195,12 +198,49 @@ def aggregate_item_emb(
             )
         index_to_embedding[item_idx] = agg_semantic_item_emb.tolist()
 
+    item_lightfm_idx_to_emb: Dict[int, List[float]] = {}
+    for item_idx in index_to_embedding:
+        item_idx = int(item_idx)
+        if item_idx not in lightfm_input.item_graph_idx_to_model_idx:
+            continue
+        item_lightfm_idx_to_emb[
+            lightfm_input.item_graph_idx_to_model_idx[item_idx]
+        ] = index_to_embedding[str(item_idx)]
+
+    item_features = []
+    for idx in range(lightfm_input.interaction_matrix.shape[1]):
+        item_features.append(item_lightfm_idx_to_emb[idx])
+    log.info(f"shape of aggregated item_features {np.array(item_features).shape}")
+    item_features = sparse.csr_matrix(np.array(item_features))
+
+    model = LightFM(
+        learning_rate=aggregate_configuration["lightfm"]["lr"],
+        loss=aggregate_configuration["lightfm"]["loss"],
+        no_components=aggregate_configuration["lightfm"]["emb_size"],
+    )
+    model.fit(
+        lightfm_input.interaction_matrix,
+        epochs=aggregate_configuration["lightfm"]["epoch"],
+        num_threads=20,
+        verbose=True,
+        item_features=item_features,
+    )
+    item_bias, item_embeddings = model.get_item_representations(features=item_features)
+    lightfm_index_to_embedding: Dict[str, List[float]] = {}
+    assert not item_embeddings is None
+    for idx, emb in enumerate(item_embeddings):
+        lightfm_index_to_embedding[
+            str(lightfm_input.item_model_idx_to_graph_idx[idx])
+        ] = emb.tolist()
+
     model_output = Model(
         model_name="pcc",
-        embedding_size=semantic_content_model.embedding_size,
-        index_to_embedding=index_to_embedding,
+        embedding_size=aggregate_configuration["lightfm"]["emb_size"],
+        index_to_embedding=lightfm_index_to_embedding,
     )
-    log.info(f"Training {len(index_to_embedding)} items' pcc embedding is completed")
+    log.info(
+        f"Training {len(lightfm_index_to_embedding)} items' pcc embedding is completed"
+    )
     return asdict(model_output)
 
 

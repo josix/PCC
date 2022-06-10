@@ -83,6 +83,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                     "goodreads_smore_content_training_embedding",
                     "goodreads_smore_semantic_content_training_embedding",
                     "processed_goodreads_content_graph",
+                    "processed_goodreads_interaction_graph",
                     "params:aggregate_item_configs",
                 ],
                 outputs="goodreads_pcc_item_embedding",
