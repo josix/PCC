@@ -19,16 +19,24 @@ ANNOY_TREE_NUM = 10
 log = logging.getLogger(__name__)
 
 
+def get_candidates(all_items: Dict[str, Any], include_seen_items=False):
+    """
+    generate candidates items to decide if including existent seen items
+    """
+    if include_seen_items:
+        return all_items["unseen_items"] + all_items["seen_items"]
+    return all_items["unseen_items"]
+
+
 def random_recommend(
     items: Dict[str, Any],
     user_profile: List[Dict[str, Any]],
     rec_num: int,
     user_num: int,
+    should_rec_seen_items: bool = False,
 ) -> Dict[str, float]:
     """Recommend items based on random selection"""
-    candidates: List[str] = (
-        items["unseen_items"] + items["seen_items"]
-    )  # TODO: decouple from experiment of recomending unseen items
+    candidates: List[str] = get_candidates(items, should_rec_seen_items)
     average_precision: List[float] = []
     recommended_items: Set[str] = set()
     recall: List[float] = []
@@ -58,6 +66,7 @@ def pcc_recommend(
     content_graph: nx.Graph,
     rec_num: int,
     user_num: int,
+    should_rec_seen_items: bool = False,
 ):
     """Recommend items based on trained PCC item embeddings"""
     model = Model(
@@ -65,9 +74,7 @@ def pcc_recommend(
         embedding_size=pcc_model["embedding_size"],
         index_to_embedding=pcc_model["index_to_embedding"],
     )
-    candidates = (
-        items["unseen_items"] + items["seen_items"]
-    )  # TODO: decouple from experiment of recomending unseen items
+    candidates = get_candidates(items, should_rec_seen_items)
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
@@ -125,6 +132,7 @@ def smore_content_model_recommend(
     rec_num: int,
     user_num: int,
     model_name: str,
+    should_rec_seen_items: bool = False,
 ):
     """Recommend items based on embeddings which trained on interaction graph"""
     model = [
@@ -137,9 +145,7 @@ def smore_content_model_recommend(
         embedding_size=model[0]["embedding_size"],
         index_to_embedding=model[0]["index_to_embedding"],
     )
-    candidates = (
-        items["unseen_items"] + items["seen_items"]
-    )  # TODO: decouple from experiment of recomending unseen items
+    candidates = get_candidates(items, should_rec_seen_items)
     trained_idx_to_nodeid: Dict[str, str] = {
         str(attrs["index"]): node_id
         for node_id, attrs in content_graph.nodes(data=True)
@@ -197,6 +203,7 @@ def tfidf_recommend(
     items_with_metadata: List[Dict[str, Any]],
     rec_num: int,
     user_num: int,
+    should_rec_seen_items: bool = False,
 ):
     """Recommend items based on embeddings which trained on interaction graph"""
     corpus: List[str] = []
@@ -216,9 +223,7 @@ def tfidf_recommend(
     vectorizer = TfidfVectorizer(max_features=1024)
     document_term_matrix = vectorizer.fit_transform(corpus)
     dim = document_term_matrix.shape[1]
-    candidates = (
-        items["unseen_items"] + items["seen_items"]
-    )  # TODO: decouple from experiment of recomending unseen items
+    candidates = get_candidates(items, should_rec_seen_items)
     candidates = set(bookid_to_idx.keys()) & set(candidates)
     annoy_index = AnnoyIndex(dim, metric="angular")
     for candidate_id in candidates:

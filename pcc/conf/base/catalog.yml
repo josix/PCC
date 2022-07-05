@@ -211,6 +211,10 @@ goodreads_smore_interactoin_model_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_interactoin_model_mf_recommend_result.json
 
+goodreads_smore_interactoin_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_interactoin_model_line_recommend_result.json
+
 goodreads_exp_lightfm_pcc_smore_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_lightfm_pcc_smore_mf_recommend_result.json

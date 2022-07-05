@@ -48,6 +48,14 @@ training_graph_configs:
         alpha: 0.025
         reg: 0.01
         threads: 10
+      line:
+        dimensions: 128
+        undirected: 1
+        order: 2
+        sample_times: 100
+        negative_samples: 5
+        alpha: 0.025
+        threads: 10
   content: 
     path: /tmp2/wswang/pcc/pcc/data/05_model_input/goodreads_comics_graphic/content_graph.tsv
     models:
