@@ -32,15 +32,15 @@ training_graph_configs:
   interaction:
     path: /tmp2/wswang/pcc/pcc/data/05_model_input/goodreads_comics_graphic/interaction_graph.tsv  # workaround for pssing pass to smore argument since kedro hides the training path info in pipeline and node function
     models:
-      # hpe:
-      #   dimensions: 128
-      #   undirected: 1
-      #   sample_times: 5
-      #   walk_steps: 5
-      #   negative_samples: 5
-      #   alpha: 0.025
-      #   reg: 0.01
-      #   threads: 10
+      hpe:
+        dimensions: 128
+        undirected: 1
+        sample_times: 100
+        walk_steps: 5
+        negative_samples: 5
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
       mf:
         dimensions: 128
         sample_times: 100

@@ -197,6 +197,27 @@ goodreads_lightfm_pcc_IW_smore_line_training_embedding:
   filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_IW_smore_line_training_embedding.json
   layer: model_output
 
+# LightFM HPE Training
+goodreads_lightfm_pcc_smore_hpe_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_smore_hpe_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_I_smore_hpe_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_I_smore_hpe_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_W_smore_hpe_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_W_smore_hpe_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_IW_smore_hpe_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_IW_smore_hpe_training_embedding.json
+  layer: model_output
+
 # random/tfidf exp result
 goodreads_exp_random_recommend_result:
   type: tracking.MetricsDataSet
@@ -241,6 +262,9 @@ goodreads_smore_interactoin_model_line_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_interactoin_model_line_recommend_result.json
 
+goodreads_smore_interactoin_model_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_interactoin_model_hpe_recommend_result.json
 
 # LightFM (PCC-MF) exp
 goodreads_exp_lightfm_pcc_smore_mf_recommend_result:
@@ -275,3 +299,20 @@ goodreads_exp_lightfm_pcc_W_smore_line_recommend_result:
 goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result.json
+
+# LightFM (PCC-HPE) exp
+goodreads_exp_lightfm_pcc_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_smore_hpe_recommend_result.json
+
+goodreads_exp_lightfm_pcc_I_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_I_smore_hpe_recommend_result.json
+
+goodreads_exp_lightfm_pcc_W_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_W_smore_hpe_recommend_result.json
+
+goodreads_exp_lightfm_pcc_IW_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_IW_smore_hpe_recommend_result.json

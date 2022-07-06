@@ -203,6 +203,59 @@ def i2i_rec_exp_pipeline() -> Pipeline:
                 outputs="goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result",
                 name="lightfm_pcc_IW_smore_line_recommend",
             ),
+            # LightFM HPE + PCC
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_smore_hpe_recommend_result",
+                name="lightfm_pcc_smore_hpe_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_I_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_I_smore_hpe_recommend_result",
+                name="lightfm_pcc_I_smore_hpe_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_W_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_W_smore_hpe_recommend_result",
+                name="lightfm_pcc_W_smore_hpe_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_IW_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_IW_smore_hpe_recommend_result",
+                name="lightfm_pcc_IW_smore_hpe_recommend",
+            ),
             # Content based recommending
             node(
                 func=rec_type_wrapper(
@@ -265,6 +318,21 @@ def i2i_rec_exp_pipeline() -> Pipeline:
                 outputs="goodreads_smore_interactoin_model_line_recommend_result",
                 name="smore_interaction_model_recommend_line",
             ),
+            node(
+                func=rec_type_wrapper(
+                    True, smore_rec_wrapper("hpe", smore_content_model_recommend)
+                ),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_smore_interaction_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_smore_interactoin_model_hpe_recommend_result",
+                name="smore_interaction_model_recommend_hpe",
+            ),
             # Tf-Idf
             node(
                 func=rec_type_wrapper(True, tfidf_recommend),
@@ -282,7 +350,7 @@ def i2i_rec_exp_pipeline() -> Pipeline:
     )
 
 
-def ccs_exp_pipeline() -> Pipeline:
+def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be included 2. using different task output name
     return pipeline(
         [
             node(
