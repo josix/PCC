@@ -97,7 +97,7 @@ def i2i_rec_exp_pipeline() -> Pipeline:
                 outputs="goodreads_exp_pcc_IW_recommend_result",
                 name="pcc_IW_recommend",
             ),
-            # LightFM + PCC
+            # LightFM MF + PCC
             node(
                 func=rec_type_wrapper(True, pcc_recommend),
                 inputs=[
@@ -149,6 +149,59 @@ def i2i_rec_exp_pipeline() -> Pipeline:
                 ],
                 outputs="goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result",
                 name="lightfm_pcc_IW_smore_mf_recommend",
+            ),
+            # LightFM Line + PCC
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_smore_line_recommend_result",
+                name="lightfm_pcc_smore_line_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_I_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_I_smore_line_recommend_result",
+                name="lightfm_pcc_I_smore_line_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_W_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_W_smore_line_recommend_result",
+                name="lightfm_pcc_W_smore_line_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(True, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_IW_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result",
+                name="lightfm_pcc_IW_smore_line_recommend",
             ),
             # Content based recommending
             node(

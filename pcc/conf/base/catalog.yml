@@ -155,6 +155,7 @@ goodreads_pcc_item_embedding_IW:
   filepath: data/07_model_output/goodreads_comics_graphic/goodreads_pcc_item_embedding_IW.json
   layer: model_output
 
+# LightFM MF Training
 goodreads_lightfm_pcc_smore_mf_training_embedding:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_smore_mf_training_embedding.json
@@ -175,6 +176,28 @@ goodreads_lightfm_pcc_IW_smore_mf_training_embedding:
   filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_IW_smore_mf_training_embedding.json
   layer: model_output
 
+# LightFM LINE Training
+goodreads_lightfm_pcc_smore_line_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_smore_line_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_I_smore_line_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_I_smore_line_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_W_smore_line_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_W_smore_line_training_embedding.json
+  layer: model_output
+
+goodreads_lightfm_pcc_IW_smore_line_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/goodreads_comics_graphic/goodreads_lightfm_pcc_IW_smore_line_training_embedding.json
+  layer: model_output
+
+# random/tfidf exp result
 goodreads_exp_random_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_random_recommend_result.json
@@ -183,6 +206,7 @@ goodreads_exp_tfidf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_tfidf_recommend_result.json
 
+# PCC rec exp
 goodreads_exp_pcc_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_pcc_recommend_result.json
@@ -199,6 +223,7 @@ goodreads_exp_pcc_IW_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_pcc_IW_recommend_result.json
 
+# SMORe Content based rec exp
 goodreads_smore_content_model_line_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_content_model_line_recommend_result.json
@@ -207,6 +232,7 @@ goodreads_smore_content_model_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_content_model_mf_recommend_result.json
 
+# CF based rec exp
 goodreads_smore_interactoin_model_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_interactoin_model_mf_recommend_result.json
@@ -215,6 +241,8 @@ goodreads_smore_interactoin_model_line_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_interactoin_model_line_recommend_result.json
 
+
+# LightFM (PCC-MF) exp
 goodreads_exp_lightfm_pcc_smore_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_lightfm_pcc_smore_mf_recommend_result.json
@@ -230,3 +258,20 @@ goodreads_exp_lightfm_pcc_W_smore_mf_recommend_result:
 goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result.json
+
+# LightFM (PCC-LINE) exp
+goodreads_exp_lightfm_pcc_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_smore_line_recommend_result.json
+
+goodreads_exp_lightfm_pcc_I_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_I_smore_line_recommend_result.json
+
+goodreads_exp_lightfm_pcc_W_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_W_smore_line_recommend_result.json
+
+goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_exp_lightfm_pcc_IW_smore_line_recommend_result.json
