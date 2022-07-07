@@ -361,8 +361,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_random_recommend_result",
-                name="random_recommend",
+                outputs="goodreads_exp_random_ccs_recommend_result",
+                name="random_ccs_recommend",
             ),
             # PCC
             node(
@@ -375,8 +375,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_pcc_recommend_result",
-                name="pcc_recommend",
+                outputs="goodreads_exp_pcc_ccs_recommend_result",
+                name="pcc_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -388,8 +388,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_pcc_I_recommend_result",
-                name="pcc_I_recommend",
+                outputs="goodreads_exp_pcc_I_ccs_recommend_result",
+                name="pcc_I_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -401,8 +401,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_pcc_W_recommend_result",
-                name="pcc_W_recommend",
+                outputs="goodreads_exp_pcc_W_ccs_recommend_result",
+                name="pcc_W_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -414,10 +414,10 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_pcc_IW_recommend_result",
-                name="pcc_IW_recommend",
+                outputs="goodreads_exp_pcc_IW_ccs_recommend_result",
+                name="pcc_IW_ccs_recommend",
             ),
-            # LightFM + PCC
+            # LightFM MF + PCC
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
                 inputs=[
@@ -428,8 +428,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_lightfm_pcc_smore_mf_recommend_result",
-                name="lightfm_pcc_smore_mf_recommend",
+                outputs="goodreads_exp_lightfm_pcc_smore_mf_ccs_recommend_result",
+                name="lightfm_pcc_smore_mf_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -441,8 +441,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_lightfm_pcc_I_smore_mf_recommend_result",
-                name="lightfm_pcc_I_smore_mf_recommend",
+                outputs="goodreads_exp_lightfm_pcc_I_smore_mf_ccs_recommend_result",
+                name="lightfm_pcc_I_smore_mf_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -454,8 +454,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_lightfm_pcc_W_smore_mf_recommend_result",
-                name="lightfm_pcc_W_smore_mf_recommend",
+                outputs="goodreads_exp_lightfm_pcc_W_smore_mf_ccs_recommend_result",
+                name="lightfm_pcc_W_smore_mf_ccs_recommend",
             ),
             node(
                 func=rec_type_wrapper(False, pcc_recommend),
@@ -467,8 +467,114 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_lightfm_pcc_IW_smore_mf_recommend_result",
-                name="lightfm_pcc_IW_smore_mf_recommend",
+                outputs="goodreads_exp_lightfm_pcc_IW_smore_mf_ccs_recommend_result",
+                name="lightfm_pcc_IW_smore_mf_ccs_recommend",
+            ),
+            # LightFM Line + PCC
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_smore_line_ccs_recommend_result",
+                name="lightfm_pcc_smore_line_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_I_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_I_smore_line_ccs_recommend_result",
+                name="lightfm_pcc_I_smore_line_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_W_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_W_smore_line_ccs_recommend_result",
+                name="lightfm_pcc_W_smore_line_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_IW_smore_line_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_IW_smore_line_ccs_recommend_result",
+                name="lightfm_pcc_IW_smore_line_ccs_recommend",
+            ),
+            # LightFM HPE + PCC
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_smore_hpe_ccs_recommend_result",
+                name="lightfm_pcc_smore_hpe_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_I_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_I_smore_hpe_ccs_recommend_result",
+                name="lightfm_pcc_I_smore_hpe_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_W_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_W_smore_hpe_ccs_recommend_result",
+                name="lightfm_pcc_W_smore_hpe_ccs_recommend",
+            ),
+            node(
+                func=rec_type_wrapper(False, pcc_recommend),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_lightfm_pcc_IW_smore_hpe_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_exp_lightfm_pcc_IW_smore_hpe_ccs_recommend_result",
+                name="lightfm_pcc_IW_smore_hpe_ccs_recommend",
             ),
             # Content based recommending
             node(
@@ -483,8 +589,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_smore_content_model_line_recommend_result",
-                name="smore_content_model_recommend_line",
+                outputs="goodreads_smore_content_model_line_ccs_recommend_result",
+                name="smore_content_model_ccs_recommend_line",
             ),
             node(
                 func=rec_type_wrapper(
@@ -498,9 +604,10 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_smore_content_model_mf_recommend_result",
-                name="smore_content_model_recommend_mf",
+                outputs="goodreads_smore_content_model_mf_ccs_recommend_result",
+                name="smore_content_model_ccs_recommend_mf",
             ),
+            # TODO: HPE Content based
             # Tf-Idf
             node(
                 func=rec_type_wrapper(False, tfidf_recommend),
@@ -511,8 +618,8 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                     "params:rec_num",
                     "params:exp_user_num",
                 ],
-                outputs="goodreads_exp_tfidf_recommend_result",
-                name="tfidf_recommend",
+                outputs="goodreads_exp_tfidf_ccs_recommend_result",
+                name="tfidf_ccs_recommend",
             ),
         ]
     )
