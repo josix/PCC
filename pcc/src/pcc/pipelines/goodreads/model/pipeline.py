@@ -91,6 +91,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 ],
                 name="smore_train",
             ),
+            # pcc
             node(
                 func=pcc_model_wrapper(aggregate_item_emb),
                 inputs=[

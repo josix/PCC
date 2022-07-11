@@ -350,7 +350,7 @@ def i2i_rec_exp_pipeline() -> Pipeline:
     )
 
 
-def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be included 2. using different task output name
+def ccs_exp_pipeline() -> Pipeline:
     return pipeline(
         [
             node(
@@ -607,7 +607,21 @@ def ccs_exp_pipeline() -> Pipeline:  # TODO 1. ascertain what models should be i
                 outputs="goodreads_smore_content_model_mf_ccs_recommend_result",
                 name="smore_content_model_ccs_recommend_mf",
             ),
-            # TODO: HPE Content based
+            node(
+                func=rec_type_wrapper(
+                    False, smore_rec_wrapper("hpe", smore_content_model_recommend)
+                ),
+                inputs=[
+                    "experiment_unseen_goodreads_comics_graphic_books",
+                    "goodreads_experiment_user_profile",
+                    "goodreads_smore_content_training_embedding",
+                    "processed_goodreads_content_graph",
+                    "params:rec_num",
+                    "params:exp_user_num",
+                ],
+                outputs="goodreads_smore_content_model_hpe_ccs_recommend_result",
+                name="smore_content_model_ccs_recommend_hpe",
+            ),
             # Tf-Idf
             node(
                 func=rec_type_wrapper(False, tfidf_recommend),

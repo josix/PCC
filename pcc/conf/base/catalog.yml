@@ -352,6 +352,10 @@ goodreads_smore_content_model_mf_ccs_recommend_result:
   type: tracking.MetricsDataSet
   filepath: data/09_tracking/goodreads_smore_content_model_mf_ccs_recommend_result.json
 
+goodreads_smore_content_model_hpe_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/goodreads_smore_content_model_hpe_ccs_recommend_result.json
+
 # LightFM (PCC-MF) ccs exp
 goodreads_exp_lightfm_pcc_smore_mf_ccs_recommend_result:
   type: tracking.MetricsDataSet

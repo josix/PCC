@@ -59,6 +59,15 @@ training_graph_configs:
   content: 
     path: /tmp2/wswang/pcc/pcc/data/05_model_input/goodreads_comics_graphic/content_graph.tsv
     models:
+      hpe:
+          dimensions: 128
+          undirected: 1
+          sample_times: 100
+          walk_steps: 5
+          negative_samples: 5
+          alpha: 0.025
+          reg: 0.01
+          threads: 10
       line:
         dimensions: 128
         undirected: 1
@@ -77,6 +86,15 @@ training_graph_configs:
   semantic_content:
     path: /tmp2/wswang/pcc/pcc/data/05_model_input/goodreads_comics_graphic/semantic_content_graph.tsv
     models:
+      hpe:
+        dimensions: 128
+        undirected: 1
+        sample_times: 100
+        walk_steps: 5
+        negative_samples: 5
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
       line:
         dimensions: 128
         undirected: 1
@@ -89,7 +107,7 @@ training_graph_configs:
 aggregate_item_configs:
   n_words: 10
   content_graph_model: line
-  semantic_content_graph_model: line
+  semantic_content_graph_model: hpe
   stradegy: concat # mean, concat, distance_weighted_average
 
 rec_num: 10
