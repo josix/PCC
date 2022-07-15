@@ -13,6 +13,31 @@ kktix_meta:
   filepath: data/01_raw/kktix2019/kktix_event_20190821.json
   layer: raw
 
+processed_kktix_events:
+    type: kedro.extras.datasets.json.JSONDataSet
+    filepath: data/03_primary/kktix2019/processed_kktix_events.json
+    layer: primary
+
+kktix_raw_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kktix2019/raw_interaction_graph.json
+  layer: intermediate
+
+kktix_raw_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kktix2019/raw_content_graph.json
+  layer: intermediate
+
+processed_kktix_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/processed_kktix_content_graph.json
+  layer: primary
+
+processed_kktix_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/processed_kktix_interaction_graph.json
+  layer: primary
+
 goodreads_comics_graphic_reviews:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/goodreads_comics_graphic/goodreads_reviews_comics_graphic.json

@@ -1,0 +1,24 @@
+# This is a boilerplate parameters config generated for pipeline 'kktix'
+# using Kedro 0.17.7.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
+
+kktix_interaction_use_fields:
+  - kktix_msno
+  - event_id
+  - ts
+
+kktix_content_use_fields:
+  - event_name
+  - event_id
+  - event_description
+  - first_publish_at
+
+kktix_top_k_keywords: 10
+
+split_point: 
+
+kktix_sparse_degee_threshold:
+  interaction_graph: 3
+  content_graph: 0

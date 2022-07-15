@@ -15,6 +15,9 @@ from pcc.pipelines.goodreads.model import (
 from pcc.pipelines.goodreads.experiment import (
     pipeline as goodread_model_experiment_pipeline,
 )
+from pcc.pipelines.kktix.data_engineering import (
+    pipeline as kktix_data_engineering_pipeline,
+)
 
 
 def register_pipelines() -> Dict[str, Pipeline]:
@@ -33,4 +36,5 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "goodread_comics_graphic_model_training": goodread_model_training_pipeline.create_pipeline(),
         "goodread_comics_graphic_experiment": goodread_model_experiment_pipeline.i2i_rec_exp_pipeline(),  # i2i for seen item rec exp
         "goodread_comics_graphic_ccs_exp": goodread_model_experiment_pipeline.ccs_exp_pipeline(),  # complete cold start i2i rec exp
+        "kktix_DE": kktix_data_engineering_pipeline.create_pipeline(),
     }

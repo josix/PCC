@@ -20,3 +20,4 @@ numpy==1.22.0
 annoy==1.17.0
 scikit-learn==1.0.2
 lightfm==1.16
+jieba==0.42.1
