@@ -17,8 +17,10 @@ kktix_content_use_fields:
 
 kktix_top_k_keywords: 10
 
-split_point: 
+split_date: "2019-06-01T00:00:00"
 
 kktix_sparse_degee_threshold:
   interaction_graph: 3
   content_graph: 0
+
+kktix_user_query_num: 3

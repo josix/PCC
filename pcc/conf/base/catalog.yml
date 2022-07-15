@@ -33,6 +33,17 @@ processed_kktix_content_graph:
   filepath: data/03_primary/kktix2019/processed_kktix_content_graph.json
   layer: primary
 
+experiment_unseen_kktix_events:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/kktix2019/experiment_unseen_kktix_events.json
+  layer: primary
+
+kktix_experiment_user_profile:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/kktix2019/kktix_experiment_user_profile.json
+  layer: primary
+
+
 processed_kktix_interaction_graph:
   type: kedro.extras.datasets.networkx.NetworkXDataSet
   filepath: data/03_primary/kktix2019/processed_kktix_interaction_graph.json
