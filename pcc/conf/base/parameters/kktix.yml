@@ -24,3 +24,91 @@ kktix_sparse_degee_threshold:
   content_graph: 0
 
 kktix_user_query_num: 3
+
+kktix_training_graph_configs:
+  interaction:
+    path: /tmp2/wswang/pcc/pcc/data/05_model_input/kktix2019/interaction_graph.tsv  # workaround for pssing pass to smore argument since kedro hides the training path info in pipeline and node function
+    models:
+      hpe:
+        dimensions: 128
+        undirected: 1
+        sample_times: 100
+        walk_steps: 5
+        negative_samples: 5
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
+      mf:
+        dimensions: 128
+        sample_times: 100
+        negative_samples: 10
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
+      line:
+        dimensions: 128
+        undirected: 1
+        order: 2
+        sample_times: 100
+        negative_samples: 5
+        alpha: 0.025
+        threads: 10
+  content: 
+    path: /tmp2/wswang/pcc/pcc/data/05_model_input/kktix2019/content_graph.tsv
+    models:
+      hpe:
+          dimensions: 128
+          undirected: 1
+          sample_times: 100
+          walk_steps: 5
+          negative_samples: 5
+          alpha: 0.025
+          reg: 0.01
+          threads: 10
+      line:
+        dimensions: 128
+        undirected: 1
+        order: 2
+        sample_times: 100
+        negative_samples: 5
+        alpha: 0.025
+        threads: 10
+      mf:
+        dimensions: 128
+        sample_times: 100
+        negative_samples: 10
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
+  semantic_content:
+    path: /tmp2/wswang/pcc/pcc/data/05_model_input/kktix2019/semantic_content_graph.tsv
+    models:
+      hpe:
+        dimensions: 128
+        undirected: 1
+        sample_times: 100
+        walk_steps: 5
+        negative_samples: 5
+        alpha: 0.025
+        reg: 0.01
+        threads: 10
+      line:
+        dimensions: 128
+        undirected: 1
+        order: 2
+        sample_times: 100
+        negative_samples: 5
+        alpha: 0.025
+        threads: 10
+
+kktix_aggregate_item_configs:
+  n_words: 10
+  content_graph_model: line
+  semantic_content_graph_model: hpe
+  stradegy: concat # mean, concat, distance_weighted_average
+
+kktix_lightfm_configs:
+  emb_size: 128
+  epoch: 10
+  lr: 0.05
+  loss: bpr

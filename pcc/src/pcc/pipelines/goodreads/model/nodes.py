@@ -266,8 +266,8 @@ def lightfm_pcc_smore(
         attrs["index"]: user_idx for user_idx, (n, attrs) in enumerate(users)
     }
     items = [
-        (n, attrs)
-        for n, attrs in interaction_graph.nodes(data=True)
+        (node, attrs)
+        for node, attrs in interaction_graph.nodes(data=True)
         if attrs["type"] == "I"
     ]
     item_graph_idx_to_model_item_idx: Dict[int, int] = {
@@ -305,22 +305,18 @@ def lightfm_pcc_smore(
         ][0]
     )
     item_model_idx_to_emb: Dict[int, List[float]] = {}
-    for item_idx in pcc_model.index_to_embedding:
-        if item_idx in smore_model.index_to_embedding:
-            output_embedding: List[float] = (
-                pcc_model.index_to_embedding[item_idx]
-                + smore_model.index_to_embedding[item_idx]
-            )
-        else:
-            output_embedding: List[float] = (
-                pcc_model.index_to_embedding[item_idx]
-                + [0.0] * smore_model.embedding_size
-            )
-        item_idx = int(item_idx)
-        if item_idx not in item_graph_idx_to_model_item_idx:
-            continue
+    for (
+        item_graph_idx
+    ) in item_graph_idx_to_model_item_idx:  # item_graph_idx is also item_emb_index
+        pcc_embedding: List[float] = [0.0] * pcc_model.embedding_size
+        smore_embedding: List[float] = [0.0] * smore_model.embedding_size
+        if str(item_graph_idx) in smore_model.index_to_embedding:
+            smore_embedding = smore_model.index_to_embedding[str(item_graph_idx)]
+        if str(item_graph_idx) in pcc_model.index_to_embedding:
+            pcc_embedding = pcc_model.index_to_embedding[str(item_graph_idx)]
+        output_embedding: List[float] = pcc_embedding + smore_embedding
         item_model_idx_to_emb[
-            item_graph_idx_to_model_item_idx[item_idx]
+            item_graph_idx_to_model_item_idx[item_graph_idx]
         ] = output_embedding
 
     item_features = []
