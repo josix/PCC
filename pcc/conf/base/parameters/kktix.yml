@@ -112,3 +112,6 @@ kktix_lightfm_configs:
   epoch: 10
   lr: 0.05
   loss: bpr
+
+kktix_rec_num: 10
+kktix_exp_user_num: 3000

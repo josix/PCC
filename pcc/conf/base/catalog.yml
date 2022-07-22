@@ -108,6 +108,102 @@ kktix_lightfm_pcc_smore_hpe_training_embedding:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/07_model_output/kktix2019/kktix_lightfm_pcc_smore_hpe_training_embedding.json
   layer: model_output
+
+# random/tfidf exp result
+kktix_exp_random_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_random_recommend_result.json
+
+kktix_exp_tfidf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_tfidf_recommend_result.json
+
+# PCC rec exp
+kktix_exp_pcc_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_pcc_recommend_result.json
+
+# LightFM (PCC-MF) exp
+kktix_exp_lightfm_pcc_smore_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_mf_recommend_result.json
+
+# LightFM (PCC-LINE) exp
+kktix_exp_lightfm_pcc_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_line_recommend_result.json
+
+# LightFM (PCC-HPE) exp
+kktix_exp_lightfm_pcc_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_hpe_recommend_result.json
+
+# SMORe Content based rec exp
+kktix_smore_content_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_line_recommend_result.json
+
+kktix_smore_content_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_mf_recommend_result.json
+
+# CF based rec exp
+kktix_smore_interactoin_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_mf_recommend_result.json
+
+kktix_smore_interactoin_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_line_recommend_result.json
+
+kktix_smore_interactoin_model_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_hpe_recommend_result.json
+
+# random/tfidf exp ccs result
+kktix_exp_random_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_random_ccs_recommend_result.json
+
+kktix_exp_tfidf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_tfidf_ccs_recommend_result.json
+
+# PCC rec ccs exp
+kktix_exp_pcc_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_pcc_ccs_recommend_result.json
+
+# SMORe Content based rec ccs exp
+kktix_smore_content_model_line_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_line_ccs_recommend_result.json
+
+kktix_smore_content_model_mf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_mf_ccs_recommend_result.json
+
+kktix_smore_content_model_hpe_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_hpe_ccs_recommend_result.json
+
+# LightFM (PCC-MF) ccs exp
+kktix_exp_lightfm_pcc_smore_mf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_mf_ccs_recommend_result.json
+
+# LightFM (PCC-LINE) ccs exp
+kktix_exp_lightfm_pcc_smore_line_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_line_ccs_recommend_result.json
+
+# LightFM (PCC-HPE) ccs exp
+kktix_exp_lightfm_pcc_smore_hpe_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_hpe_ccs_recommend_result.json
+
+
+
 ##### GOODREADS #####
 goodreads_comics_graphic_reviews:
   type: kedro.extras.datasets.json.JSONDataSet
