@@ -3,6 +3,7 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
+##### KKTIX #####
 kktix_interactions:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/kktix2019/behavior.json
@@ -13,6 +14,197 @@ kktix_meta:
   filepath: data/01_raw/kktix2019/kktix_event_20190821.json
   layer: raw
 
+processed_kktix_events:
+    type: kedro.extras.datasets.json.JSONDataSet
+    filepath: data/03_primary/kktix2019/processed_kktix_events.json
+    layer: primary
+
+kktix_raw_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kktix2019/raw_interaction_graph.json
+  layer: intermediate
+
+kktix_raw_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/02_intermediate/kktix2019/raw_content_graph.json
+  layer: intermediate
+
+processed_kktix_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/processed_kktix_interaction_graph.json
+  layer: primary
+
+processed_kktix_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/processed_kktix_content_graph.json
+  layer: primary
+
+experiment_unseen_kktix_events:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/kktix2019/experiment_unseen_kktix_events.json
+  layer: primary
+
+kktix_experiment_user_profile:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/03_primary/kktix2019/kktix_experiment_user_profile.json
+  layer: primary
+
+kktix_trainging_interaction_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/kktix_trainging_interaction_graph.json
+  layer: primary
+
+kktix_training_semantic_content_graph:
+  type: kedro.extras.datasets.networkx.NetworkXDataSet
+  filepath: data/03_primary/kktix2019/kktix_training_semantic_content_graph.json
+  layer: primary
+
+kktix_smore_interaction_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/kktix2019/interaction_graph.tsv
+  layer: model_input
+
+kktix_smore_content_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/kktix2019/content_graph.tsv
+  layer: model_input
+
+kktix_smore_semantic_content_training_graph:
+  type: kedro.extras.datasets.text.TextDataSet
+  filepath: data/05_model_input/kktix2019/semantic_content_graph.tsv
+  layer: model_input
+
+kktix_smore_interaction_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/interaction_rep.json
+  layer: model_output
+
+kktix_smore_content_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/content_rep.json
+  layer: model_output
+
+kktix_smore_semantic_content_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/semantic_content_rep.json
+  layer: model_output
+
+kktix_pcc_item_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/pcc_item_embedding.json
+  layer: model_output
+
+kktix_lightfm_pcc_smore_mf_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/kktix_lightfm_pcc_smore_mf_training_embedding.json
+  layer: model_output
+
+kktix_lightfm_pcc_smore_line_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/kktix_lightfm_pcc_smore_line_training_embedding.json
+  layer: model_output
+
+kktix_lightfm_pcc_smore_hpe_training_embedding:
+  type: kedro.extras.datasets.json.JSONDataSet
+  filepath: data/07_model_output/kktix2019/kktix_lightfm_pcc_smore_hpe_training_embedding.json
+  layer: model_output
+
+# random/tfidf exp result
+kktix_exp_random_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_random_recommend_result.json
+
+kktix_exp_tfidf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_tfidf_recommend_result.json
+
+# PCC rec exp
+kktix_exp_pcc_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_pcc_recommend_result.json
+
+# LightFM (PCC-MF) exp
+kktix_exp_lightfm_pcc_smore_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_mf_recommend_result.json
+
+# LightFM (PCC-LINE) exp
+kktix_exp_lightfm_pcc_smore_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_line_recommend_result.json
+
+# LightFM (PCC-HPE) exp
+kktix_exp_lightfm_pcc_smore_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_hpe_recommend_result.json
+
+# SMORe Content based rec exp
+kktix_smore_content_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_line_recommend_result.json
+
+kktix_smore_content_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_mf_recommend_result.json
+
+# CF based rec exp
+kktix_smore_interactoin_model_mf_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_mf_recommend_result.json
+
+kktix_smore_interactoin_model_line_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_line_recommend_result.json
+
+kktix_smore_interactoin_model_hpe_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_interactoin_model_hpe_recommend_result.json
+
+# random/tfidf exp ccs result
+kktix_exp_random_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_random_ccs_recommend_result.json
+
+kktix_exp_tfidf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_tfidf_ccs_recommend_result.json
+
+# PCC rec ccs exp
+kktix_exp_pcc_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_pcc_ccs_recommend_result.json
+
+# SMORe Content based rec ccs exp
+kktix_smore_content_model_line_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_line_ccs_recommend_result.json
+
+kktix_smore_content_model_mf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_mf_ccs_recommend_result.json
+
+kktix_smore_content_model_hpe_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_smore_content_model_hpe_ccs_recommend_result.json
+
+# LightFM (PCC-MF) ccs exp
+kktix_exp_lightfm_pcc_smore_mf_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_mf_ccs_recommend_result.json
+
+# LightFM (PCC-LINE) ccs exp
+kktix_exp_lightfm_pcc_smore_line_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_line_ccs_recommend_result.json
+
+# LightFM (PCC-HPE) ccs exp
+kktix_exp_lightfm_pcc_smore_hpe_ccs_recommend_result:
+  type: tracking.MetricsDataSet
+  filepath: data/09_tracking/kktix2019/kktix_exp_lightfm_pcc_smore_hpe_ccs_recommend_result.json
+
+
+
+##### GOODREADS #####
 goodreads_comics_graphic_reviews:
   type: kedro.extras.datasets.json.JSONDataSet
   filepath: data/01_raw/goodreads_comics_graphic/goodreads_reviews_comics_graphic.json

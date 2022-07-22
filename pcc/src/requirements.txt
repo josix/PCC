@@ -112,6 +112,8 @@ isort==5.10.1
     # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 jedi==0.18.1
     # via ipython
+jieba==0.42.1
+    # via -r /tmp2/wswang/pcc/pcc/src/requirements.in
 jinja2==3.0.3
     # via
     #   cookiecutter
